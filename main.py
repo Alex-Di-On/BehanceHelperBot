@@ -1,15 +1,9 @@
-import requests
-import time
+import requests  # Библиотека, позволяющая создавать http-запросы.
+import time  # Библиотека, позволяющая управлять временем.
 
 
-URL = 'https://api.telegram.org/bot'
-TOKEN = '5566556459:AAHmi2BQlryt-6UQbBkXPdmw1JizcrGJjdo'
-
-
-def get_status(code):
-    if code != 200:
-        return False
-    return True
+URL = 'https://api.telegram.org/bot'  # Официальный API Telegram для отправки запросов.
+TOKEN = '5566556459:AAHmi2BQlryt-6UQbBkXPdmw1JizcrGJjdo'  # Конфиденциальный токен telegram-бота.
 
 
 def get_update_id(data):
@@ -22,6 +16,12 @@ def get_update(id):
     method = '/getUpdates'
     data = {'offset': id, 'limit': 1, 'timeout': 0}
     return requests.post(URL + TOKEN + method, data=data)
+
+
+def get_status(code):
+    if code != 200:
+        return False
+    return True
 
 
 def get_client_id(data):

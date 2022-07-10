@@ -12,6 +12,11 @@ class Helper:
     response = None
     response_json = None
     client_id = None
+    client_name = None
+    client_text = None
+    ANSWERS = {0: 'Я тебя не понимаю!',
+               1: 'Ты выиграл машину!',
+               2: 'Когда напишешь код?'}
 
     def __init__(self, identification):
         self.identification = identification
@@ -35,6 +40,27 @@ class Helper:
             self.client_id = self.response_json['result'][0]['message']['from']['id']
             return True
 
+    def client_information(self):
+        """Фиксируем Имя Пользователя и Текст сообщения."""
+        self.client_name = self.response_json['result'][0]['message']['from']['first_name']
+        self.client_text = self.response_json['result'][0]['message']['text']
+
+    def text_validation(self):
+        """Валидируем текст сообщения и возвращаем ключ ответа."""
+        if self.client_text == 'Пасхалка':
+            return 1
+        elif self.client_text == 'Виктор':
+            return 2
+        return 0
+
+    def send_message(self):
+        action = '/sendMessage'
+        body = {'chat_id': self.client_id, 'text': self.ANSWERS[self.text_validation()]}
+        return requests.post(URL + TOKEN + action, data=body)
+
+
+
+
 
 """Функциональная часть для определения
 текущего id с целью запуска основной программы."""
@@ -54,29 +80,6 @@ def get_update(id):
     return requests.post(URL + TOKEN + method, data=data)
 
 
-
-
-def get_client_text(data):
-    return data['result'][0]['message']['text']
-
-
-def send_text(id, text):
-    action = '/sendMessage'
-    body = {'chat_id': id, 'text': text}
-    return requests.post(URL + TOKEN + action, data=body)
-
-
-def text_validation(name, text):
-    if text == 'Пасхалка':
-        return f'{name}, You won a car!'
-    else:
-        return f"{name}, I didn't understand you!"
-
-
-def get_name_client(data):
-    return data['result'][0]['message']['from']['first_name']
-
-
 if __name__ == '__main__':
     id = get_update_id(get_update(0).json())
     print(f'Start id: {id}')
@@ -86,7 +89,6 @@ if __name__ == '__main__':
         helper.get_update()  # Получаем ответ на запрос.
         helper.convert_response()  # Если ответ 200, конвертируем его в json(), если нет - останавливаем программу.
         if helper.get_client_id():  # Возвращает True, если кто-то обратился и фиксирует id Пользователя.
-            text = get_client_text(helper.response_json)
-            name = get_name_client(helper.response_json)
-            send_text(helper.client_id, text_validation(name, text))
+            helper.client_information()  # Фиксируем Имя Пользователя и Текст сообщения.
+            helper.send_message()  # Отправляем ответ Пользователю.
             id += 1  # Увеличиваем id для обработки нового входящего сообщения от Пользователя.

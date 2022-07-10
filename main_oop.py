@@ -1,5 +1,6 @@
 import requests  # Библиотека, позволяющая создавать http-запросы.
 import time  # Библиотека, позволяющая управлять временем.
+import sys
 
 
 URL = 'https://api.telegram.org/bot'  # Официальный API Telegram для отправки запросов.
@@ -10,22 +11,21 @@ class Helper:
 
     response = None
     response_json = None
+    client_id = None
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, identification):
+        self.identification = identification
 
     def get_update(self):
         method = '/getUpdates'
-        data = {'offset': self.id, 'limit': 1, 'timeout': 0}
+        data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
         self.response = requests.post(URL + TOKEN + method, data=data)
 
     def convert_response(self):
         if self.response.status_code == 200:
             self.response_json = self.response.json()
-
-
-
-
+        else:
+            sys.exit(f'Не удалось получить ответ от Telegram. Код ошибки: {self.response.status_code}.')
 
 
 """Функциональная часть для определения update_id."""
@@ -45,11 +45,6 @@ def get_update(id):
     return requests.post(URL + TOKEN + method, data=data)
 
 
-
-def get_status(code):
-    if code != 200:
-        return False
-    return True
 
 
 def get_client_id(data):
@@ -89,7 +84,6 @@ if __name__ == '__main__':
         helper.get_update()
         helper.convert_response()
         client_id = get_client_id(helper.response_json)
-        print(client_id)
         if client_id:
             text = get_client_text(helper.response_json)
             name = get_name_client(helper.response_json)

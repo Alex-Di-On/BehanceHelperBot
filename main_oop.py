@@ -28,6 +28,7 @@ class Helper:
             sys.exit(f'Не удалось получить ответ от Telegram. Код ошибки: {self.response.status_code}.')
 
     def get_client_id(self):
+        """Получаем client_id или выводим в консоль результат запроса."""
         if not self.response_json['result']:
             print('Никто не обращался к боту!')
         else:
@@ -81,11 +82,11 @@ if __name__ == '__main__':
     print(f'Start id: {id}')
     while True:
         time.sleep(0.5)
-        helper = Helper(id)
-        helper.get_update()
-        helper.convert_response()
-        if helper.get_client_id():
+        helper = Helper(id)  # Создаем экземпляр класса.
+        helper.get_update()  # Получаем ответ на запрос.
+        helper.convert_response()  # Если ответ 200, конвертируем его в json(), если нет - останавливаем программу.
+        if helper.get_client_id():  # Возвращает True, если кто-то обратился и фиксирует id Пользователя.
             text = get_client_text(helper.response_json)
             name = get_name_client(helper.response_json)
             send_text(helper.client_id, text_validation(name, text))
-            id += 1
+            id += 1  # Увеличиваем id для обработки нового входящего сообщения от Пользователя.

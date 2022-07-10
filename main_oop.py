@@ -8,7 +8,7 @@ TOKEN = '5411737719:AAG7_xCgARflJwofkP-nTiAhcrMIhinltqQ'  # Конфиденци
 
 class Helper:
 
-    response = {}
+    response = None
 
     def __init__(self, id):
         self.id = id
@@ -17,6 +17,12 @@ class Helper:
         method = '/getUpdates'
         data = {'offset': self.id, 'limit': 1, 'timeout': 0}
         self.response = requests.post(URL + TOKEN + method, data=data)
+
+    def get_status(self):
+        if self.response.status_code != 200:
+            return False
+        return True
+
 
 
 
@@ -79,9 +85,10 @@ if __name__ == '__main__':
     print(f'Start id: {id}')
     while True:
         time.sleep(0.5)
-        res = get_update(id)
-        if get_status(res.status_code):
-            get_update_json = res.json()
+        helper = Helper(id)
+        helper.get_update()
+        if helper.get_status():
+            get_update_json = helper.response.json()
             client_id = get_client_id(get_update_json)
             print(client_id)
             if client_id:

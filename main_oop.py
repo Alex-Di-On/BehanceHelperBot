@@ -3,7 +3,7 @@ import time  # Библиотека, позволяющая управлять �
 
 
 URL = 'https://api.telegram.org/bot'  # Официальный API Telegram для отправки запросов.
-TOKEN = '5566556459:AAHmi2BQlryt-6UQbBkXPdmw1JizcrGJjdo'  # Конфиденциальный токен telegram-бота.
+TOKEN = '5411737719:AAG7_xCgARflJwofkP-nTiAhcrMIhinltqQ'  # Конфиденциальный токен telegram-бота. Тестовый бот.
 
 
 def get_update_id(data):
@@ -52,14 +52,7 @@ def get_name_client(data):
     return data['result'][0]['message']['from']['first_name']
 
 
-# def setWebhook():
-#     method = '/setWebhook'
-#     data = {'url': 'https://alex-di.com/bot'}
-#     return requests.post(URL + TOKEN + method, data=data)
-
 if __name__ == '__main__':
-    # req = setWebhook()
-    # print(req.text)
     id = get_update_id(get_update(0).json())
     print(f'Start id: {id}')
     while True:

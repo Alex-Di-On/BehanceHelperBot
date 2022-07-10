@@ -1,14 +1,13 @@
 import requests  # Библиотека, позволяющая создавать http-запросы.
 import time  # Библиотека, позволяющая управлять временем.
-import sys
-
-
-URL = 'https://api.telegram.org/bot'  # Официальный API Telegram для отправки запросов.
-TOKEN = '5411737719:AAG7_xCgARflJwofkP-nTiAhcrMIhinltqQ'  # Конфиденциальный токен telegram-бота. Тестовый бот.
+import sys  # Библиотека, позволяющая остановить выполнение программы.
 
 
 class Helper:
+    """Класс-помощник, который обрабатывает результат запроса к Telegram."""
 
+    URL = 'https://api.telegram.org/bot'  # Официальный API Telegram для отправки запросов.
+    TOKEN = '5411737719:AAG7_xCgARflJwofkP-nTiAhcrMIhinltqQ'  # Конфиденциальный токен telegram-бота. Тестовый бот.
     response = None
     response_json = None
     client_id = None
@@ -22,11 +21,13 @@ class Helper:
         self.identification = identification
 
     def get_update(self):
+        """Получаем результат POST-запроса к Telegram."""
         method = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        self.response = requests.post(URL + TOKEN + method, data=data)
+        self.response = requests.post(self.URL + self.TOKEN + method, data=data)
 
     def convert_response(self):
+        """Конвертируем ответ в json(), если статус ответа - 200."""
         if self.response.status_code == 200:
             self.response_json = self.response.json()
         else:
@@ -54,12 +55,10 @@ class Helper:
         return 0
 
     def send_message(self):
+        """Отправляем ответ Пользователю."""
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': self.ANSWERS[self.text_validation()]}
-        return requests.post(URL + TOKEN + action, data=body)
-
-
-
+        return requests.post(self.URL + self.TOKEN + action, data=body)
 
 
 """Функциональная часть для определения
@@ -77,7 +76,7 @@ def get_update(id):
     """Получаем тело ответа на POST-запрос к боту, по найденному id."""
     method = '/getUpdates'
     data = {'offset': id, 'limit': 1, 'timeout': 0}
-    return requests.post(URL + TOKEN + method, data=data)
+    return requests.post(Helper.URL + Helper.TOKEN + method, data=data)
 
 
 if __name__ == '__main__':

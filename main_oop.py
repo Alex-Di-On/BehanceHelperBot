@@ -27,8 +27,16 @@ class Helper:
         else:
             sys.exit(f'Не удалось получить ответ от Telegram. Код ошибки: {self.response.status_code}.')
 
+    def get_client_id(self):
+        if not self.response_json['result']:
+            print('Никто не обращался к боту!')
+        else:
+            self.client_id = self.response_json['result'][0]['message']['from']['id']
+            return True
 
-"""Функциональная часть для определения update_id."""
+
+"""Функциональная часть для определения
+текущего id с целью запуска основной программы."""
 
 
 def get_update_id(data):
@@ -45,13 +53,6 @@ def get_update(id):
     return requests.post(URL + TOKEN + method, data=data)
 
 
-
-
-def get_client_id(data):
-    if data['result'] == []:
-        print('Нет новых сообщений!')
-        return False
-    return data['result'][0]['message']['from']['id']
 
 
 def get_client_text(data):
@@ -83,9 +84,8 @@ if __name__ == '__main__':
         helper = Helper(id)
         helper.get_update()
         helper.convert_response()
-        client_id = get_client_id(helper.response_json)
-        if client_id:
+        if helper.get_client_id():
             text = get_client_text(helper.response_json)
             name = get_name_client(helper.response_json)
-            send_text(client_id, text_validation(name, text))
+            send_text(helper.client_id, text_validation(name, text))
             id += 1

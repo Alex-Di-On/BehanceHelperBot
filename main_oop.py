@@ -6,16 +6,38 @@ URL = 'https://api.telegram.org/bot'  # Официальный API Telegram дл
 TOKEN = '5411737719:AAG7_xCgARflJwofkP-nTiAhcrMIhinltqQ'  # Конфиденциальный токен telegram-бота. Тестовый бот.
 
 
+class Helper:
+
+    response = {}
+
+    def __init__(self, id):
+        self.id = id
+
+    def get_update(self):
+        method = '/getUpdates'
+        data = {'offset': self.id, 'limit': 1, 'timeout': 0}
+        self.response = requests.post(URL + TOKEN + method, data=data)
+
+
+
+
+
+"""Функциональная часть для определения update_id."""
+
+
 def get_update_id(data):
-    if data['result'] == []:
+    """Получаем id, последнего отправленного боту сообщения."""
+    if not data['result']:
         return False
     return data['result'][0]['update_id']
 
 
 def get_update(id):
+    """Получаем тело ответа на POST-запрос к боту, по найденному id."""
     method = '/getUpdates'
     data = {'offset': id, 'limit': 1, 'timeout': 0}
     return requests.post(URL + TOKEN + method, data=data)
+
 
 
 def get_status(code):

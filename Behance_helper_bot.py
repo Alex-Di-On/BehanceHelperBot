@@ -10,7 +10,6 @@ TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
 class BehanceHelper:
     """Базовый класс обработки ответа от API Telegram."""
 
-    WAYS_BOX = {1: "['result'][0]['message']"}
     client_id = None
 
     def __init__(self, identification):

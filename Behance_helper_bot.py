@@ -8,7 +8,10 @@ TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
 
 
 class BehanceHelper:
-    """Базовый класс получения запроса."""
+    """Базовый класс обработки ответа от API Telegram."""
+
+    WAYS_BOX = {1: "['result'][0]['message']"}
+    client_id = None
 
     def __init__(self, identification):
         self.identification = identification
@@ -17,75 +20,52 @@ class BehanceHelper:
         """Получаем результат POST-запроса к Telegram."""
         method = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        self.response = requests.post(URL + TOKEN + method, data=data)
-
-
-
-
-
-
-
-
-    response = None
-    response_json = None
-    client_id = None
-    client_name = None
-    client_text = None
-    followers = None
-
-
-
-    ANSWERS = {0: 'Я тебя не понимаю!',
-               1: 'Ты выиграл машину!',
-               2: 'Когда напишешь код?',
-               3: f'Подписчиков на Behance: {followers}'}
-
-
-
-
+        return requests.post(URL + TOKEN + method, data=data)
 
     def convert_response(self):
         """Конвертируем ответ в json(), если статус ответа - 200."""
-        if self.response.status_code == 200:
-            self.response_json = self.response.json()
-        else:
-            sys.exit(f'Не удалось получить ответ от Telegram. Код ошибки: {self.response.status_code}.')
+        if self.get_update().status_code == 200:
+            return self.get_update().json()
+        return sys.exit(f'Не удалось получить ответ от Telegram. Код ошибки: {self.get_update().status_code}.')
 
     def get_client_id(self):
         """Получаем client_id или выводим в консоль результат запроса."""
-        if not self.response_json['result']:
+        if not self.convert_response()['result']:
             print('Никто не обращался к боту!')
         else:
-            self.client_id = self.response_json['result'][0]['message']['from']['id']
+            self.client_id = self.convert_response()['result'][0]['message']['from']['id']
             return True
 
-    def client_information(self):
-        """Фиксируем Имя Пользователя и Текст сообщения."""
-        self.client_name = self.response_json['result'][0]['message']['from']['first_name']
-        self.client_text = self.response_json['result'][0]['message']['text']
+    def client_message(self):
+        """Получаем текст сообщения (запрашиваемый URL) от Клиента."""
+        return self.convert_response()['result'][0]['message']['text']
 
-    def text_validation(self):
-        """Валидируем текст сообщения и возвращаем ключ ответа."""
-        if self.client_text == 'Пасхалка':
-            return 1
-        elif self.client_text == 'Виктор':
-            return 2
-        elif self.client_text == 'Anastazi':
-            self.followers = self.get_followers_count()
-            self.ANSWERS[3] = f'Подписчиков на Behance: {self.followers}'
-            return 3
-        return 0
+
+class FollowersCounter(BehanceHelper):
+    """Дочерний класс который отправляет Клиенту информационное сообщение."""
+
+    behance_res = None
+    followers = None
+    info_message = 'Не удалось найти пользователя.'
+
+    def url_validation(self):
+        """Проверяем, существует ли такой пользователь."""
+        user = f'https://www.behance.net/{self.client_message()}'
+        self.behance_res = requests.get(user)
+        if self.behance_res.status_code == 200:
+            return True
 
     def get_followers_count(self):
-        user = 'https://www.behance.net/anastazi_li'
-        res = requests.get(user)
-        page = BeautifulSoup(res.text, 'html.parser')
-        return page.find('a', class_='e2e-UserInfo-statValue-followers-count').text
+        """Получаем кол-во подписчиков."""
+        if self.url_validation():
+            page = BeautifulSoup(self.behance_res.text, 'html.parser')
+            self.followers = page.find('a', class_='e2e-UserInfo-statValue-followers-count').text
+            self.info_message = f'Кол-во подписчиков: {self.followers}'
 
-    def send_message(self):
-        """Отправляем ответ Пользователю."""
+    def send_info_message(self):
+        """Отправляем ответ Клиенту."""
         action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': self.ANSWERS[self.text_validation()]}
+        body = {'chat_id': self.client_id, 'text': self.info_message}
         return requests.post(URL + TOKEN + action, data=body)
 
 
@@ -111,11 +91,10 @@ if __name__ == '__main__':
     print(f'Start id: {id}')
     while True:
         time.sleep(0.3)
-        helper = BehanceHelper(id)  # Создаем экземпляр класса.
+        helper = FollowersCounter(id)  # Создаем экземпляр класса.
         helper.get_update()  # Получаем ответ на запрос.
         helper.convert_response()  # Если ответ 200, конвертируем его в json(), если нет - останавливаем программу.
         if helper.get_client_id():  # Возвращает True, если кто-то обратился и фиксирует id Пользователя.
-            print(helper.client_id)
-            helper.client_information()  # Фиксируем Имя Пользователя и Текст сообщения.
-            helper.send_message()  # Отправляем ответ Пользователю.
+            helper.get_followers_count()  # Получаем кол-во подписчиков.
+            helper.send_info_message()  # Отправляем ответ Пользователю.
             id += 1  # Увеличиваем id для обработки нового входящего сообщения от Пользователя.

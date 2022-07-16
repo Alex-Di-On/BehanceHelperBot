@@ -93,7 +93,6 @@ if __name__ == '__main__':
         time.sleep(0.3)
         helper = FollowersCounter(id)  # Создаем экземпляр класса.
         helper.get_update()  # Получаем ответ на запрос.
-        helper.convert_response()  # Если ответ 200, конвертируем его в json(), если нет - останавливаем программу.
         if helper.get_client_id():  # Возвращает True, если кто-то обратился и фиксирует id Пользователя.
             helper.get_followers_count()  # Получаем кол-во подписчиков.
             helper.send_info_message()  # Отправляем ответ Пользователю.

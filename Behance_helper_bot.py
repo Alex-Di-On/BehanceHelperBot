@@ -1,24 +1,14 @@
-import requests  # Библиотека, позволяющая создавать http-запросы.
-import time  # Библиотека, позволяющая управлять временем.
-import sys  # Библиотека, позволяющая остановить выполнение программы.
+import requests
+import time
+import sys
 from bs4 import BeautifulSoup
 
+URL = 'https://api.telegram.org/bot'
+TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
 
-class Helper:
-    """Класс-помощник, который обрабатывает результат запроса к Telegram."""
 
-    URL = 'https://api.telegram.org/bot'  # Официальный API Telegram для отправки запросов.
-    TOKEN = '5411737719:AAG7_xCgARflJwofkP-nTiAhcrMIhinltqQ'  # Конфиденциальный токен telegram-бота. Тестовый бот.
-    response = None
-    response_json = None
-    client_id = None
-    client_name = None
-    client_text = None
-    followers = None
-    ANSWERS = {0: 'Я тебя не понимаю!',
-               1: 'Ты выиграл машину!',
-               2: 'Когда напишешь код?',
-               3: f'Подписчиков на Behance: {followers}'}
+class BehanceHelper:
+    """Базовый класс получения запроса."""
 
     def __init__(self, identification):
         self.identification = identification
@@ -27,7 +17,32 @@ class Helper:
         """Получаем результат POST-запроса к Telegram."""
         method = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        self.response = requests.post(self.URL + self.TOKEN + method, data=data)
+        self.response = requests.post(URL + TOKEN + method, data=data)
+
+
+
+
+
+
+
+
+    response = None
+    response_json = None
+    client_id = None
+    client_name = None
+    client_text = None
+    followers = None
+
+
+
+    ANSWERS = {0: 'Я тебя не понимаю!',
+               1: 'Ты выиграл машину!',
+               2: 'Когда напишешь код?',
+               3: f'Подписчиков на Behance: {followers}'}
+
+
+
+
 
     def convert_response(self):
         """Конвертируем ответ в json(), если статус ответа - 200."""
@@ -71,11 +86,10 @@ class Helper:
         """Отправляем ответ Пользователю."""
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': self.ANSWERS[self.text_validation()]}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
+        return requests.post(URL + TOKEN + action, data=body)
 
 
-"""Функциональная часть для определения
-текущего id с целью запуска основной программы."""
+"""Функциональная часть"""
 
 
 def get_update_id(data):
@@ -89,7 +103,7 @@ def get_update(id=0):
     """Получаем тело ответа на POST-запрос к боту, по найденному id."""
     method = '/getUpdates'
     data = {'offset': id, 'limit': 1, 'timeout': 0}
-    return requests.post(Helper.URL + Helper.TOKEN + method, data=data)
+    return requests.post(URL + TOKEN + method, data=data)
 
 
 if __name__ == '__main__':
@@ -97,7 +111,7 @@ if __name__ == '__main__':
     print(f'Start id: {id}')
     while True:
         time.sleep(0.3)
-        helper = Helper(id)  # Создаем экземпляр класса.
+        helper = BehanceHelper(id)  # Создаем экземпляр класса.
         helper.get_update()  # Получаем ответ на запрос.
         helper.convert_response()  # Если ответ 200, конвертируем его в json(), если нет - останавливаем программу.
         if helper.get_client_id():  # Возвращает True, если кто-то обратился и фиксирует id Пользователя.

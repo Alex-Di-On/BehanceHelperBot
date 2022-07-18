@@ -39,18 +39,26 @@ class BehanceHelper:
         """Получаем текст сообщения от Клиента."""
         return self.convert_response()['result'][0]['message']['text']
 
-    def text_filtration(self):
-        """Фильтруем запрос Клиента."""
-        hello = 'Введите URL автора на Behance, чтобы узнать его кол-во подписчиков! Например, anastazi_li'
+    def text_validation(self):
+        """Валидируем сообщение от Клиента."""
         if self.client_message() == '/start':
-            action = '/sendMessage'
-            body = {'chat_id': self.client_id, 'text': hello}
-            return requests.post(URL + TOKEN + action, data=body)
-        return self.client_message()
+            return 0
+        return 1
+
+
+class BotHello(BehanceHelper):
+    """Дочерний класс приветствия нового Клиента."""
+
+    def send_info_message(self):
+        """Приветствуем Клиента."""
+        hello = 'Введите URL автора на Behance, чтобы узнать его кол-во подписчиков! Например, anastazi_li.'
+        action = '/sendMessage'
+        body = {'chat_id': self.client_id, 'text': hello}
+        return requests.post(URL + TOKEN + action, data=body)
 
 
 class FollowersCounter(BehanceHelper):
-    """Дочерний класс который отправляет Клиенту информационное сообщение."""
+    """Дочерний класс который отправляет Клиенту информацию о кол-ве подписчиков."""
 
     behance_res = None
     followers = None
@@ -58,7 +66,7 @@ class FollowersCounter(BehanceHelper):
 
     def url_validation(self):
         """Проверяем, существует ли такой пользователь."""
-        user = f'https://www.behance.net/{self.text_filtration()}'
+        user = f'https://www.behance.net/{self.client_message()}'
         self.behance_res = requests.get(user)
         if self.behance_res.status_code == 200:
             return True
@@ -97,13 +105,18 @@ def get_update(id=0):
 if __name__ == '__main__':
     id = get_update_id(get_update().json())
     print(f'Start id: {id}')
-
     while True:
-        time.sleep(0.3)
-        helper = FollowersCounter(id)  # Создаем экземпляр класса.
+        time.sleep(0.5)
+        helper = BehanceHelper(id)  # Создаем экземпляр родительского класса.
         helper.get_update()  # Получаем ответ на запрос.
-        if helper.get_client_id():  # Возвращает True, если кто-то обратился и фиксирует id Пользователя.
-            helper.text_filtration()  # Фильтруем команду Клиенту.
-            helper.get_followers_count()  # Получаем кол-во подписчиков.
-            helper.send_info_message()  # Отправляем ответ Пользователю.
-            id += 1  # Увеличиваем id для обработки нового входящего сообщения от Пользователя.
+        if helper.get_client_id():  # Фиксируем id Клиента.
+            if helper.text_validation() == 0:
+                hello = BotHello(id)
+                hello.get_client_id()
+                hello.send_info_message()
+            if helper.text_validation() == 1:
+                follower = FollowersCounter(id)
+                follower.get_client_id()
+                follower.get_followers_count()
+                follower.send_info_message()
+            id += 1

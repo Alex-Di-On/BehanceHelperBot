@@ -1,8 +1,8 @@
 import requests
 import time
 import sys
-from bs4 import BeautifulSoup
 import json
+import parser
 
 URL = 'https://api.telegram.org/bot'
 TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
@@ -12,6 +12,7 @@ class BehanceHelper:
     """Базовый класс обработки ответа от API Telegram."""
 
     client_id = None
+    COMMAND_BOX = ['Просмотры', 'Подписчики', 'Местонахождение']
 
     def __init__(self, identification):
         self.identification = identification
@@ -42,14 +43,18 @@ class BehanceHelper:
 
     def text_validation(self):
         """Валидируем сообщение от Клиента."""
-        if self.client_message() == '/start':
+        message = self.client_message().split()[0]
+        if message == '/start':
             self.send_start()
-        elif self.client_message() == 'Просмотры':
-            pass
-        elif self.client_message() == 'Оценки':
-            pass
-        elif self.client_message() == 'Местонахождение':
-            pass
+        elif message in self.COMMAND_BOX:
+            user_name = self.client_message().split()[1]
+            object = parser.Parser(user_name)
+            if message == self.COMMAND_BOX[0]:
+                self.send_info(object.get_views())
+            elif message == self.COMMAND_BOX[1]:
+                self.send_info(object.get_followers())
+            elif message == self.COMMAND_BOX[2]:
+                self.send_info(object.get_place())
         else:
             self.send_menu()
 
@@ -63,38 +68,45 @@ class BehanceHelper:
     def send_menu(self):
         """Отправляем Клиенту меню."""
         hello = 'Выберите, что вы хотите узнать:'
-        buttons = {'keyboard': [['Просмотры'], ['Оценки'], ['Местонахождение']]}
+        buttons = {'keyboard': [[f'Просмотры {self.client_message()}'],
+                                [f'Подписчики {self.client_message()}'],
+                                [f'Местонахождение {self.client_message()}']]}
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
         return requests.post(URL + TOKEN + action, data=body)
 
-
-class FollowersCounter(BehanceHelper):
-    """Дочерний класс который отправляет Клиенту информацию о кол-ве подписчиков."""
-
-    behance_res = None
-    followers = None
-    info_message = 'Не удалось найти пользователя.'
-
-    def url_validation(self):
-        """Проверяем, существует ли такой пользователь."""
-        user = f'https://www.behance.net/{self.client_message()}'
-        self.behance_res = requests.get(user)
-        if self.behance_res.status_code == 200:
-            return True
-
-    def get_followers_count(self):
-        """Получаем кол-во подписчиков."""
-        if self.url_validation():
-            page = BeautifulSoup(self.behance_res.text, 'html.parser')
-            self.followers = page.find('a', class_='e2e-UserInfo-statValue-followers-count').text
-            self.info_message = f'Кол-во подписчиков: {self.followers}'
-
-    def send_info_message(self):
-        """Отправляем ответ Клиенту."""
+    def send_info(self, text):
         action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': self.info_message}
+        body = {'chat_id': self.client_id, 'text': text}
         return requests.post(URL + TOKEN + action, data=body)
+
+
+# class FollowersCounter(BehanceHelper):
+#     """Дочерний класс который отправляет Клиенту информацию о кол-ве подписчиков."""
+#
+#     behance_res = None
+#     followers = None
+#     info_message = 'Не удалось найти пользователя.'
+#
+#     def url_validation(self):
+#         """Проверяем, существует ли такой пользователь."""
+#         user = f'https://www.behance.net/{self.client_message()}'
+#         self.behance_res = requests.get(user)
+#         if self.behance_res.status_code == 200:
+#             return True
+#
+#     def get_followers_count(self):
+#         """Получаем кол-во подписчиков."""
+#         if self.url_validation():
+#             page = BeautifulSoup(self.behance_res.text, 'html.parser')
+#             self.followers = page.find('a', class_='e2e-UserInfo-statValue-followers-count').text
+#             self.info_message = f'Кол-во подписчиков: {self.followers}'
+#
+#     def send_info_message(self):
+#         """Отправляем ответ Клиенту."""
+#         action = '/sendMessage'
+#         body = {'chat_id': self.client_id, 'text': self.info_message}
+#         return requests.post(URL + TOKEN + action, data=body)
 
 
 """Функциональная часть"""

@@ -120,9 +120,5 @@ if __name__ == '__main__':
         helper = BehanceHelper(id)  # Создаем экземпляр родительского класса.
         helper.get_update()  # Получаем ответ на запрос.
         if helper.get_client_id():  # Фиксируем id Клиента.
-            if helper.text_validation():
-                follower = FollowersCounter(id)
-                follower.get_client_id()
-                follower.get_followers_count()
-                follower.send_info_message()
+            helper.text_validation()
             id += 1

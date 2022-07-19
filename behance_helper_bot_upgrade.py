@@ -10,10 +10,9 @@ class BehanceHelper:
 
     URL = 'https://api.telegram.org/bot'
     TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
-    client_id = None
     COMMAND_BOX = ['Просмотры', 'Подписчики', 'Местонахождение']
+    client_id = None
     behance_res = None
-    default_message = 'Не удалось найти пользователя.'
 
     def __init__(self, identification):
         self.identification = identification
@@ -68,52 +67,29 @@ class BehanceHelper:
 
     def send_menu(self):
         """Отправляем Клиенту меню."""
-        hello = 'Выберите, что вы хотите узнать:'
-        buttons = {'keyboard': [[f'Просмотры {self.client_message()}'],
-                                [f'Подписчики {self.client_message()}'],
-                                [f'Местонахождение {self.client_message()}']]}
-        action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
+        if self.url_validation():
+            hello = 'Выберите, что вы хотите узнать:'
+            buttons = {'keyboard': [[f'Просмотры {self.client_message()}'],
+                                    [f'Подписчики {self.client_message()}'],
+                                    [f'Местонахождение {self.client_message()}']]}
+            action = '/sendMessage'
+            body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
+            return requests.post(self.URL + self.TOKEN + action, data=body)
+        else:
+            self.send_info('Не удалось найти автора на Behance.')
 
     def send_info(self, text):
+        """Отправляем ответ Клиенту."""
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': text}
         return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def url_validation(self):
+        """Проверяем, что такой автор существует."""
         self.behance_res = requests.get(parser.Parser.WEBSITE + self.client_message())
         if self.behance_res.status_code == 200:
             return True
         return False
-
-
-# class FollowersCounter(BehanceHelper):
-#     """Дочерний класс который отправляет Клиенту информацию о кол-ве подписчиков."""
-#
-#     behance_res = None
-#     followers = None
-#     info_message = 'Не удалось найти пользователя.'
-#
-#     def url_validation(self):
-#         """Проверяем, существует ли такой пользователь."""
-#         user = f'https://www.behance.net/{self.client_message()}'
-#         self.behance_res = requests.get(user)
-#         if self.behance_res.status_code == 200:
-#             return True
-#
-#     def get_followers_count(self):
-#         """Получаем кол-во подписчиков."""
-#         if self.url_validation():
-#             page = BeautifulSoup(self.behance_res.text, 'html.parser')
-#             self.followers = page.find('a', class_='e2e-UserInfo-statValue-followers-count').text
-#             self.info_message = f'Кол-во подписчиков: {self.followers}'
-#
-#     def send_info_message(self):
-#         """Отправляем ответ Клиенту."""
-#         action = '/sendMessage'
-#         body = {'chat_id': self.client_id, 'text': self.info_message}
-#         return requests.post(URL + TOKEN + action, data=body)
 
 
 """Функциональная часть"""

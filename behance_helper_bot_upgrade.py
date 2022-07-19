@@ -4,15 +4,16 @@ import sys
 import json
 import parser
 
-URL = 'https://api.telegram.org/bot'
-TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
-
 
 class BehanceHelper:
     """Базовый класс обработки ответа от API Telegram."""
 
+    URL = 'https://api.telegram.org/bot'
+    TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
     client_id = None
     COMMAND_BOX = ['Просмотры', 'Подписчики', 'Местонахождение']
+    behance_res = None
+    default_message = 'Не удалось найти пользователя.'
 
     def __init__(self, identification):
         self.identification = identification
@@ -21,7 +22,7 @@ class BehanceHelper:
         """Получаем результат POST-запроса к Telegram."""
         method = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        return requests.post(URL + TOKEN + method, data=data)
+        return requests.post(self.URL + self.TOKEN + method, data=data)
 
     def convert_response(self):
         """Конвертируем ответ в json(), если статус ответа - 200."""
@@ -63,7 +64,7 @@ class BehanceHelper:
         hello = 'Введите URL автора на Behance, например, anastazi_li:'
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello}
-        return requests.post(URL + TOKEN + action, data=body)
+        return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def send_menu(self):
         """Отправляем Клиенту меню."""
@@ -73,12 +74,18 @@ class BehanceHelper:
                                 [f'Местонахождение {self.client_message()}']]}
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
-        return requests.post(URL + TOKEN + action, data=body)
+        return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def send_info(self, text):
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': text}
-        return requests.post(URL + TOKEN + action, data=body)
+        return requests.post(self.URL + self.TOKEN + action, data=body)
+
+    def url_validation(self):
+        self.behance_res = requests.get(parser.Parser.WEBSITE + self.client_message())
+        if self.behance_res.status_code == 200:
+            return True
+        return False
 
 
 # class FollowersCounter(BehanceHelper):
@@ -123,7 +130,7 @@ def get_update(id=0):
     """Получаем тело ответа на POST-запрос к боту, по найденному id."""
     method = '/getUpdates'
     data = {'offset': id, 'limit': 1, 'timeout': 0}
-    return requests.post(URL + TOKEN + method, data=data)
+    return requests.post(BehanceHelper.URL + BehanceHelper.TOKEN + method, data=data)
 
 
 if __name__ == '__main__':

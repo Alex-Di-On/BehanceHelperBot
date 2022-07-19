@@ -22,9 +22,9 @@ class Parser:
         """Получаем информацию о кол-ве просмотров."""
         try:
             views = self.get_html_page().find('td', class_='UserInfo-statColumn-NsR UserInfo-statValue-d3q').text
-            return f'Просмотры проекта {self.user}: {views}.'
+            return f'Просмотры {self.user}: {views}.'
         except AttributeError:
-            return f'Просмотры проекта {self.user}: 0.'
+            return f'Просмотры {self.user}: 0.'
 
     def get_followers(self):
         """Получаем информацию о кол-ве подписчиков."""

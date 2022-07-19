@@ -43,25 +43,27 @@ class BehanceHelper:
     def text_validation(self):
         """Валидируем сообщение от Клиента."""
         if self.client_message() == '/start':
-            self.send_info_message()
-            return False
-        return True
+            self.send_start()
+        elif self.client_message() == 'Просмотры':
+            pass
+        elif self.client_message() == 'Оценки':
+            pass
+        elif self.client_message() == 'Местонахождение':
+            pass
+        else:
+            self.send_menu()
 
-    def send_info_message(self):
+    def send_start(self):
         """Приветствуем Клиента."""
         hello = 'Введите URL автора на Behance, например, anastazi_li:'
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello}
         return requests.post(URL + TOKEN + action, data=body)
 
-
-class BotHello(BehanceHelper):
-    """Дочерний класс приветствия нового Клиента."""
-
-    def send_info_message(self):
-        """Приветствуем Клиента."""
-        hello = 'Введите URL автора на Behance, например, anastazi_li.'
-        buttons = {'keyboard': [['anastazi_li']]}
+    def send_menu(self):
+        """Отправляем Клиенту меню."""
+        hello = 'Выберите, что вы хотите узнать:'
+        buttons = {'keyboard': [['Просмотры'], ['Оценки'], ['Местонахождение']]}
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
         return requests.post(URL + TOKEN + action, data=body)

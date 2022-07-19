@@ -43,8 +43,16 @@ class BehanceHelper:
     def text_validation(self):
         """Валидируем сообщение от Клиента."""
         if self.client_message() == '/start':
-            return 0
-        return 1
+            self.send_info_message()
+            return False
+        return True
+
+    def send_info_message(self):
+        """Приветствуем Клиента."""
+        hello = 'Введите URL автора на Behance, например, anastazi_li:'
+        action = '/sendMessage'
+        body = {'chat_id': self.client_id, 'text': hello}
+        return requests.post(URL + TOKEN + action, data=body)
 
 
 class BotHello(BehanceHelper):
@@ -52,7 +60,7 @@ class BotHello(BehanceHelper):
 
     def send_info_message(self):
         """Приветствуем Клиента."""
-        hello = 'Введите URL автора на Behance, чтобы узнать его кол-во подписчиков! Например, anastazi_li.'
+        hello = 'Введите URL автора на Behance, например, anastazi_li.'
         buttons = {'keyboard': [['anastazi_li']]}
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
@@ -112,11 +120,7 @@ if __name__ == '__main__':
         helper = BehanceHelper(id)  # Создаем экземпляр родительского класса.
         helper.get_update()  # Получаем ответ на запрос.
         if helper.get_client_id():  # Фиксируем id Клиента.
-            if helper.text_validation() == 0:
-                hello = BotHello(id)
-                hello.get_client_id()
-                hello.send_info_message()
-            if helper.text_validation() == 1:
+            if helper.text_validation():
                 follower = FollowersCounter(id)
                 follower.get_client_id()
                 follower.get_followers_count()

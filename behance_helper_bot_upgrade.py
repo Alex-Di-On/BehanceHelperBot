@@ -2,6 +2,7 @@ import requests
 import time
 import sys
 from bs4 import BeautifulSoup
+import json
 
 URL = 'https://api.telegram.org/bot'
 TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
@@ -52,8 +53,9 @@ class BotHello(BehanceHelper):
     def send_info_message(self):
         """Приветствуем Клиента."""
         hello = 'Введите URL автора на Behance, чтобы узнать его кол-во подписчиков! Например, anastazi_li.'
+        buttons = {'keyboard': [['anastazi_li']]}
         action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': hello}
+        body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
         return requests.post(URL + TOKEN + action, data=body)
 
 

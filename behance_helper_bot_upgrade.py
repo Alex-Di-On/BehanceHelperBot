@@ -10,7 +10,7 @@ class BehanceHelper:
 
     URL = 'https://api.telegram.org/bot'
     TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
-    COMMAND_BOX = ['Просмотры', 'Подписчики', 'Местонахождение']
+    COMMAND_BOX = ['Views', 'Appreciations', 'Followers', 'Following', 'Place']
     client_id = None
     behance_res = None
 
@@ -52,8 +52,12 @@ class BehanceHelper:
             if message == self.COMMAND_BOX[0]:
                 self.send_info(object.get_views())
             elif message == self.COMMAND_BOX[1]:
-                self.send_info(object.get_followers())
+                self.send_info(object.get_appreciations())
             elif message == self.COMMAND_BOX[2]:
+                self.send_info(object.get_followers())
+            elif message == self.COMMAND_BOX[3]:
+                self.send_info(object.get_following())
+            elif message == self.COMMAND_BOX[4]:
                 self.send_info(object.get_place())
         else:
             self.send_menu()
@@ -69,9 +73,11 @@ class BehanceHelper:
         """Отправляем Клиенту меню."""
         if self.url_validation():
             hello = 'Выберите, что вы хотите узнать:'
-            buttons = {'keyboard': [[f'Просмотры {self.client_message()}'],
-                                    [f'Подписчики {self.client_message()}'],
-                                    [f'Местонахождение {self.client_message()}']]}
+            buttons = {'keyboard': [[f'Views {self.client_message()}'],
+                                    [f'Appreciations {self.client_message()}'],
+                                    [f'Followers {self.client_message()}'],
+                                    [f'Following {self.client_message()}'],
+                                    [f'Place {self.client_message()}']]}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)

@@ -62,31 +62,21 @@ class Parser:
         except KeyError:
             return f'Following of {self.user}: 0'
 
-    # def get_place(self):
-    #     """Получаем информацию о местонахождении автора."""
-    #     try:
-    #         place = self.get_html_page().find('span', class_='e2e-Profile-location').text
-    #         return f'Местонахождение {self.user}: {place}.'
-    #     except AttributeError:
-    #         return f'Не удалось получить информацию.'
+    def get_place(self):
+        """Получаем информацию о местонахождении автора."""
+        try:
+            place = self.get_html_page().find('span', class_='e2e-Profile-location').text
+            return f'Country of {self.user}: {place}'
+        except AttributeError:
+            return f"{self.user} didn't indicate the country on the form."
 
 
 p = Parser('anastazi_li')
-print(p.get_views())
-print(p.get_appreciations())
-print(p.get_followers())
-print(p.get_following())
+print(p.get_place())
 
 p = Parser('rosinadar5')
-print(p.get_views())
-print(p.get_appreciations())
-print(p.get_followers())
-print(p.get_following())
+print(p.get_place())
 
 p = Parser('D3Master')
-print(p.get_views())
-print(p.get_appreciations())
-print(p.get_followers())
-print(p.get_following())
-
+print(p.get_place())
 

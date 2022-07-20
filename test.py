@@ -7,6 +7,7 @@ class Parser:
 
     WEBSITE = 'https://www.behance.net/'
     info_dict = {'Project Views': '0', 'Appreciations': '0', 'Followers': '0', 'Following': '0'}
+    place = None
 
     def __init__(self, user):
         self.user = user
@@ -65,18 +66,13 @@ class Parser:
     def get_place(self):
         """Получаем информацию о местонахождении автора."""
         try:
-            place = self.get_html_page().find('span', class_='e2e-Profile-location').text
-            return f'Country of {self.user}: {place}'
+            self.place = self.get_html_page().find('span', class_='e2e-Profile-location').text
+            return f'Country of {self.user}: {self.place} {self.get_flag_emoji(self.place)}'
         except AttributeError:
             return f"{self.user} didn't indicate the country on the form."
 
-
-p = Parser('anastazi_li')
-print(p.get_place())
-
-p = Parser('rosinadar5')
-print(p.get_place())
-
-p = Parser('D3Master')
-print(p.get_place())
-
+    def get_flag_emoji(self, country):
+        country = country.split()
+        url = 'https://emojipedia.org/flag-'
+        res = BeautifulSoup(requests.get(url + country[-1].lower()).text, 'html.parser').find('title').text
+        return res.split()[0]

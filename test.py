@@ -38,17 +38,30 @@ class Parser:
         """Получаем информацию о кол-ве просмотров."""
         try:
             return f'Project Views of {self.user}: {self.get_info_dict()["Project Views"]}'
-        except AttributeError:
+        except KeyError:
             return f'Project Views of {self.user}: 0'
-    #
-    # def get_followers(self):
-    #     """Получаем информацию о кол-ве подписчиков."""
-    #     try:
-    #         followers = self.get_html_page().find('a', class_='e2e-UserInfo-statValue-followers-count').text
-    #         return f'Подписчики {self.user}: {followers}.'
-    #     except AttributeError:
-    #         return f'Подписчики {self.user}: 0.'
-    #
+
+    def get_appreciations(self):
+        """Получаем информацию о кол-ве оценок."""
+        try:
+            return f'Appreciations of {self.user}: {self.get_info_dict()["Appreciations"]}'
+        except KeyError:
+            return f'Appreciations of {self.user}: 0'
+
+    def get_followers(self):
+        """Получаем информацию о кол-ве подписчиков."""
+        try:
+            return f'Followers of {self.user}: {self.get_info_dict()["Followers"]}'
+        except KeyError:
+            return f'Followers of {self.user}: 0'
+
+    def get_following(self):
+        """Получаем информацию о кол-ве подписок."""
+        try:
+            return f'Following of {self.user}: {self.get_info_dict()["Following"]}'
+        except KeyError:
+            return f'Following of {self.user}: 0'
+
     # def get_place(self):
     #     """Получаем информацию о местонахождении автора."""
     #     try:
@@ -60,13 +73,20 @@ class Parser:
 
 p = Parser('anastazi_li')
 print(p.get_views())
-
+print(p.get_appreciations())
+print(p.get_followers())
+print(p.get_following())
 
 p = Parser('rosinadar5')
 print(p.get_views())
-
+print(p.get_appreciations())
+print(p.get_followers())
+print(p.get_following())
 
 p = Parser('D3Master')
 print(p.get_views())
+print(p.get_appreciations())
+print(p.get_followers())
+print(p.get_following())
 
 

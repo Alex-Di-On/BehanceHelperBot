@@ -30,8 +30,7 @@ class Parser:
                     keys.append(views.find_all('td')[cell].text)
                 else:
                     values.append(views.find_all('td')[cell].text)
-            info_dict = dict(zip(keys, values))
-            print(info_dict)
+            return dict(zip(keys, values))
         except AttributeError:
             return self.info_dict
 

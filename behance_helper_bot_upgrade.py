@@ -10,7 +10,7 @@ class BehanceHelper:
 
     URL = 'https://api.telegram.org/bot'
     TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
-    COMMAND_BOX = ['Views', 'Appreciations', 'Followers', 'Following', 'Place']
+    COMMAND_BOX = ['Views', 'Appreciations', 'Followers', 'Following', 'Country']
     client_id = None
     behance_res = None
 
@@ -64,7 +64,7 @@ class BehanceHelper:
 
     def send_start(self):
         """Приветствуем Клиента."""
-        hello = 'Введите URL автора на Behance, например, anastazi_li:'
+        hello = "Please, input author's URL on Behance:"
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': hello}
         return requests.post(self.URL + self.TOKEN + action, data=body)
@@ -72,17 +72,17 @@ class BehanceHelper:
     def send_menu(self):
         """Отправляем Клиенту меню."""
         if self.url_validation():
-            hello = 'Выберите, что вы хотите узнать:'
+            hello = 'Please, select the menu item:'
             buttons = {'keyboard': [[f'Views {self.client_message()}'],
                                     [f'Appreciations {self.client_message()}'],
                                     [f'Followers {self.client_message()}'],
                                     [f'Following {self.client_message()}'],
-                                    [f'Place {self.client_message()}']]}
+                                    [f'Country {self.client_message()}']]}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)
         else:
-            self.send_info('Не удалось найти автора на Behance.')
+            self.send_info('This author has no portfolio on Behance.')
 
     def send_info(self, text):
         """Отправляем ответ Клиенту."""

@@ -6,7 +6,7 @@ class Parser:
     """Парсер веб-страницы."""
 
     WEBSITE = 'https://www.behance.net/'
-    info_dict = {'Project Views': '0', 'Appreciations': '0', 'Followers': '0', 'Following': '0'}
+    info_dict = {'Views': '0', 'Appreciations': '0', 'Followers': '0', 'Following': '0'}
     place = None
 
     def __init__(self, user):
@@ -38,9 +38,9 @@ class Parser:
     def get_views(self):
         """Получаем информацию о кол-ве просмотров."""
         try:
-            return f'Project Views of {self.user}: {self.get_info_dict()["Project Views"]}'
+            return f'Views of {self.user}: {self.get_info_dict()["Project Views"]}'
         except KeyError:
-            return f'Project Views of {self.user}: 0'
+            return f'Views of {self.user}: 0'
 
     def get_appreciations(self):
         """Получаем информацию о кол-ве оценок."""

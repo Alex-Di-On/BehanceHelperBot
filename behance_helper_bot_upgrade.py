@@ -47,7 +47,7 @@ class BehanceHelper:
         if message == '/start':
             self.send_start()
         elif message in self.COMMAND_BOX:
-            user_name = self.client_message().split()[1]
+            user_name = self.client_message().split()[2]
             object = parser.Parser(user_name)
             if message == self.COMMAND_BOX[0]:
                 self.send_info(object.get_views())
@@ -73,11 +73,11 @@ class BehanceHelper:
         """Отправляем Клиенту меню."""
         if self.url_validation():
             hello = 'Please, select the menu item:'
-            buttons = {'keyboard': [[f'Views {self.client_message()}'],
-                                    [f'Appreciations {self.client_message()}'],
-                                    [f'Followers {self.client_message()}'],
-                                    [f'Following {self.client_message()}'],
-                                    [f'Country {self.client_message()}']]}
+            buttons = {'keyboard': [[f'Views of {self.client_message()}'],
+                                    [f'Appreciations of {self.client_message()}'],
+                                    [f'Followers of {self.client_message()}'],
+                                    [f'Following of {self.client_message()}'],
+                                    [f'Country of {self.client_message()}']]}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)

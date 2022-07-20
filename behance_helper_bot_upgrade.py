@@ -93,9 +93,7 @@ class BehanceHelper:
     def url_validation(self):
         """Проверяем, что такой автор существует."""
         self.behance_res = requests.get(parser.Parser.WEBSITE + self.client_message())
-        if self.behance_res.status_code == 200:
-            return True
-        return False
+        return self.behance_res.status_code == 200
 
 
 """Функциональная часть"""
@@ -104,7 +102,7 @@ class BehanceHelper:
 def get_update_id(data):
     """Получаем id, последнего отправленного боту сообщения."""
     if not data['result']:
-        return False
+        return 0
     return data['result'][0]['update_id']
 
 

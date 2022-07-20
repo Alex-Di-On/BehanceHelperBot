@@ -34,16 +34,12 @@ class Parser:
         except AttributeError:
             return self.info_dict
 
-
-
-    # def get_views(self):
-    #     """Получаем информацию о кол-ве просмотров."""
-    #     try:
-    #         views = self.get_html_page().find('table', class_='UserInfo-userStats-PFk')
-    #         for cell in views.find_all('td'):
-    #             print(cell.text)
-    #     except AttributeError:
-    #         return f'Просмотры {self.user}: 0.'
+    def get_views(self):
+        """Получаем информацию о кол-ве просмотров."""
+        try:
+            return f'Project Views of {self.user}: {self.get_info_dict()["Project Views"]}'
+        except AttributeError:
+            return f'Project Views of {self.user}: 0'
     #
     # def get_followers(self):
     #     """Получаем информацию о кол-ве подписчиков."""
@@ -63,14 +59,14 @@ class Parser:
 
 
 p = Parser('anastazi_li')
-print(p.get_info_dict())
+print(p.get_views())
 
 
 p = Parser('rosinadar5')
-print(p.get_info_dict())
+print(p.get_views())
 
 
 p = Parser('D3Master')
-print(p.get_info_dict())
+print(p.get_views())
 
 

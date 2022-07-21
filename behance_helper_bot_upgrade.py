@@ -95,18 +95,18 @@ class BehanceHelper:
             self.send_info('This author has no portfolio on Behance.')
 
     def send_info(self, text):
-        """Отправляем ответ Клиенту."""
+        """We send a response to the client."""
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': text}
         return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def url_validation(self):
-        """Проверяем, что такой автор существует."""
+        """Check that the author is registered on Behance."""
         self.behance_res = requests.get(parser.Parser.WEBSITE + self.client_message())
         return self.behance_res.status_code == 200
 
 
-"""Функциональная часть"""
+"""Functional part for the initial launch of the script (trapping Start id)."""
 
 
 def get_update_id(data):

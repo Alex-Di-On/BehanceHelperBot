@@ -21,19 +21,17 @@ class Parser:
         return BeautifulSoup(self.get_requests().text, 'html.parser')
 
     def get_info_dict(self):
-        """Получаем словарь: описание - значение."""
+        """Generate and return a dictionary with information about the author."""
         try:
             views = self.get_html_page().find('table', class_='UserInfo-userStats-PFk')
-            keys = []
-            values = []
-            for cell in range(len(views.find_all('td'))):
-                if cell % 2 == 0:
-                    keys.append(views.find_all('td')[cell].text)
-                else:
-                    values.append(views.find_all('td')[cell].text)
-            return dict(zip(keys, values))
+            array = [views.find_all('td')[i].text for i in range(len(views.find_all('td')))]
+            return {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}
         except AttributeError:
             return self.info_dict
+
+    def get_behance_info(self):
+        """Generate and return the information requested by the client."""
+        pass
 
     def get_views(self):
         """Получаем информацию о кол-ве просмотров."""
@@ -72,6 +70,7 @@ class Parser:
             return f"{self.user} didn't indicate the country on the form."
 
     def get_flag_emoji(self, country):
+        """Getting the emoji flag."""
         country = country.split()
         url = 'https://emojipedia.org/flag-'
         res = BeautifulSoup(requests.get(url + country[-1].lower()).text, 'html.parser').find('title').text

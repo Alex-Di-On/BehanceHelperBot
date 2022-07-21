@@ -41,26 +41,36 @@ class BehanceHelper:
         """Получаем текст сообщения от Клиента."""
         return self.convert_response()['result'][0]['message']['text']
 
+    def language_test(self, word):
+        """Check that the message is written in English."""
+        for i in list(word):
+            if not ord(i) in range(32, 128):
+                self.send_info("I don't understand you. Use English, please.")
+                return False
+        return True
+
     def text_validation(self):
-        """Валидируем сообщение от Клиента."""
+        """Call the method depending on the message received from the client."""
         message = self.client_message().split()[0]
-        if message == '/start':
-            self.send_start()
-        elif message in self.COMMAND_BOX:
-            user_name = self.client_message().split()[2]
-            object = parser.Parser(user_name)
-            if message == self.COMMAND_BOX[0]:
-                self.send_info(object.get_views())
-            elif message == self.COMMAND_BOX[1]:
-                self.send_info(object.get_appreciations())
-            elif message == self.COMMAND_BOX[2]:
-                self.send_info(object.get_followers())
-            elif message == self.COMMAND_BOX[3]:
-                self.send_info(object.get_following())
-            elif message == self.COMMAND_BOX[4]:
-                self.send_info(object.get_place())
-        else:
-            self.send_menu()
+        if self.language_test(message):
+            if message == '/start':
+                self.send_start()
+            elif message in self.COMMAND_BOX:
+                user_name = self.client_message().split()[2]
+                object = parser.Parser(user_name)
+                match message:
+                    case 'Views':
+                        self.send_info(object.get_views())
+                    case 'Appreciations':
+                        self.send_info(object.get_appreciations())
+                    case 'Followers':
+                        self.send_info(object.get_followers())
+                    case 'Following':
+                        self.send_info(object.get_following())
+                    case 'Country':
+                        self.send_info(object.get_place())
+            else:
+                self.send_menu()
 
     def send_start(self):
         """Приветствуем Клиента."""

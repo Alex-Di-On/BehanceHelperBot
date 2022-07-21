@@ -58,17 +58,7 @@ class BehanceHelper:
             elif command_message in self.COMMAND_BOX:
                 user_name = self.client_message().split()[-1]
                 object = parser.Parser(user_name, command_message)
-                match command_message:
-                    case 'Project Views':
-                        self.send_info(object.get_views())
-                    case 'Appreciations':
-                        self.send_info(object.get_appreciations())
-                    case 'Followers':
-                        self.send_info(object.get_followers())
-                    case 'Following':
-                        self.send_info(object.get_following())
-                    case 'Country':
-                        self.send_info(object.get_place())
+                self.send_info(object.get_behance_info())
             else:
                 self.send_menu()
 

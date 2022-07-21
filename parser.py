@@ -33,37 +33,11 @@ class Parser:
     def get_behance_info(self):
         """Generate and return the information requested by the client."""
         try:
+            if self.command == 'Country':
+                return self.get_place()
             return f'{self.command} of {self.user}: {self.get_info_dict()[self.command]}'
         except KeyError:
             return f'{self.command} of {self.user}: 0'
-
-    def get_views(self):
-        """Получаем информацию о кол-ве просмотров."""
-        try:
-            return f'Views of {self.user}: {self.get_info_dict()["Project Views"]}'
-        except KeyError:
-            return f'Views of {self.user}: 0'
-
-    def get_appreciations(self):
-        """Получаем информацию о кол-ве оценок."""
-        try:
-            return f'Appreciations of {self.user}: {self.get_info_dict()["Appreciations"]}'
-        except KeyError:
-            return f'Appreciations of {self.user}: 0'
-
-    def get_followers(self):
-        """Получаем информацию о кол-ве подписчиков."""
-        try:
-            return f'Followers of {self.user}: {self.get_info_dict()["Followers"]}'
-        except KeyError:
-            return f'Followers of {self.user}: 0'
-
-    def get_following(self):
-        """Получаем информацию о кол-ве подписок."""
-        try:
-            return f'Following of {self.user}: {self.get_info_dict()["Following"]}'
-        except KeyError:
-            return f'Following of {self.user}: 0'
 
     def get_place(self):
         """Получаем информацию о местонахождении автора."""

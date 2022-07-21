@@ -92,7 +92,7 @@ class BehanceHelper:
 
     def url_validation(self):
         """Check that the author is registered on Behance."""
-        self.behance_res = requests.get(parser.Parser.WEBSITE + self.client_message())
+        self.behance_res = requests.get(parser.Parser.WEB_PAGE + self.client_message())
         return self.behance_res.status_code == 200
 
 

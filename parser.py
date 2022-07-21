@@ -6,11 +6,12 @@ class Parser:
     """Парсер веб-страницы."""
 
     WEBSITE = 'https://www.behance.net/'
-    info_dict = {'Views': '0', 'Appreciations': '0', 'Followers': '0', 'Following': '0'}
+    info_dict = {'Project Views': '0', 'Appreciations': '0', 'Followers': '0', 'Following': '0'}
     place = None
 
-    def __init__(self, user):
+    def __init__(self, user, command):
         self.user = user
+        self.command = command
 
     def get_requests(self):
         """Отправляем запрос на главную страницу автора."""
@@ -31,7 +32,10 @@ class Parser:
 
     def get_behance_info(self):
         """Generate and return the information requested by the client."""
-        pass
+        try:
+            return f'{self.command} of {self.user}: {self.get_info_dict()[self.command]}'
+        except KeyError:
+            return f'{self.command} of {self.user}: 0'
 
     def get_views(self):
         """Получаем информацию о кол-ве просмотров."""

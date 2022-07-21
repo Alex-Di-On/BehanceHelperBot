@@ -10,7 +10,7 @@ class BehanceHelper:
 
     URL = 'https://api.telegram.org/bot'
     TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
-    COMMAND_BOX = ['Views', 'Appreciations', 'Followers', 'Following', 'Country']
+    COMMAND_BOX = ['Project Views', 'Appreciations', 'Followers', 'Following', 'Country']
     client_id = None
     behance_res = None
 
@@ -51,15 +51,17 @@ class BehanceHelper:
 
     def text_validation(self):
         """Call the method depending on the message received from the client."""
-        message = self.client_message().split()[0]
-        if self.language_test(message):
-            if message == '/start':
+        if self.language_test(self.client_message()):
+            array_message = self.client_message().split()
+            command_message = array_message[:-2]
+            message = ' '.join(command_message)
+            if self.client_message() == '/start':
                 self.send_start()
             elif message in self.COMMAND_BOX:
-                user_name = self.client_message().split()[2]
-                object = parser.Parser(user_name)
+                user_name = self.client_message().split()[-1]
+                object = parser.Parser(user_name, message)
                 match message:
-                    case 'Views':
+                    case 'Project Views':
                         self.send_info(object.get_views())
                     case 'Appreciations':
                         self.send_info(object.get_appreciations())
@@ -83,7 +85,7 @@ class BehanceHelper:
         """Отправляем Клиенту меню."""
         if self.url_validation():
             hello = 'Please, select the menu item:'
-            buttons = {'keyboard': [[f'Views of {self.client_message()}'],
+            buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],
                                     [f'Following of {self.client_message()}'],

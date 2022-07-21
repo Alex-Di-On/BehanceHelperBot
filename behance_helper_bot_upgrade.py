@@ -52,15 +52,13 @@ class BehanceHelper:
     def text_validation(self):
         """Call the method depending on the message received from the client."""
         if self.language_test(self.client_message()):
-            array_message = self.client_message().split()
-            command_message = array_message[:-2]
-            message = ' '.join(command_message)
+            command_message = ' '.join(self.client_message().split()[:-2])
             if self.client_message() == '/start':
                 self.send_start()
-            elif message in self.COMMAND_BOX:
+            elif command_message in self.COMMAND_BOX:
                 user_name = self.client_message().split()[-1]
-                object = parser.Parser(user_name, message)
-                match message:
+                object = parser.Parser(user_name, command_message)
+                match command_message:
                     case 'Project Views':
                         self.send_info(object.get_views())
                     case 'Appreciations':

@@ -3,13 +3,14 @@ import time
 import sys
 import json
 import parser
+from config import private_token
 
 
 class BehanceHelper:
     """Базовый класс обработки ответа от API Telegram."""
 
     URL = 'https://api.telegram.org/bot'
-    TOKEN = '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU'
+    TOKEN = private_token
     COMMAND_BOX = ['Project Views', 'Appreciations', 'Followers', 'Following', 'Country']
     client_id = None
     behance_res = None

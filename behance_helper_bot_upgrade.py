@@ -1,6 +1,5 @@
 import requests
 import time
-import sys
 import json
 import parser
 from config import private_token
@@ -32,7 +31,7 @@ class BehanceHelper:
             return self.get_update().json()
 
     def get_client_id(self):
-        """Получаем client_id или выводим в консоль результат запроса."""
+        """Getting client_id or output the result of the query to the console."""
         try:
             self.client_id = self.convert_response()['result'][0]['message']['from']['id']
             return True
@@ -41,14 +40,14 @@ class BehanceHelper:
             return False
 
     def client_message(self):
-        """Получаем текст сообщения от Клиента."""
+        """Receiving a text message from Client."""
         return self.convert_response()['result'][0]['message']['text']
 
     def language_test(self, word):
         """Check that the message is written in English."""
         for i in list(word):
             if not ord(i) in range(32, 128):
-                self.send_info("I don't understand you. Use English, please.")
+                self.send_info(answers['language_test'])
                 return False
         return True
 

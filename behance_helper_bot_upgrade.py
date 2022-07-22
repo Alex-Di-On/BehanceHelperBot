@@ -100,14 +100,14 @@ class BehanceHelper:
 
 
 def get_update_id(data):
-    """Получаем id, последнего отправленного боту сообщения."""
+    """Getting id of the last message sent to the bot."""
     if not data['result']:
         return 0
     return data['result'][0]['update_id']
 
 
 def get_update(id=0):
-    """Получаем тело ответа на POST-запрос к боту, по найденному id."""
+    """Getting the response body of the POST request to the bot, by the id found."""
     method = '/getUpdates'
     data = {'offset': id, 'limit': 1, 'timeout': 0}
     return requests.post(BehanceHelper.URL + BehanceHelper.TOKEN + method, data=data)
@@ -118,8 +118,7 @@ if __name__ == '__main__':
     print(f'Start id: {id}')
     while True:
         time.sleep(0.5)
-        helper = BehanceHelper(id)  # Создаем экземпляр родительского класса.
-        helper.get_update()  # Получаем ответ на запрос.
-        if helper.get_client_id():  # Фиксируем id Клиента.
+        helper = BehanceHelper(id)
+        if helper.get_client_id():
             helper.text_validation()
             id += 1

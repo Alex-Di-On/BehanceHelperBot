@@ -77,7 +77,8 @@ class BehanceHelper:
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],
                                     [f'Following of {self.client_message()}'],
-                                    [f'Country of {self.client_message()}']]}
+                                    [f'Country of {self.client_message()}'],
+                                    [f'CHANGE URL']]}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)

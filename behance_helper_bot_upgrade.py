@@ -36,7 +36,7 @@ class BehanceHelper:
             self.client_id = self.convert_response()['result'][0]['message']['from']['id']
             return True
         except:
-            print(answers['nobody_calling'])
+            print(answers['nobody_calling'] + str(self.get_update().status_code))
             return False
 
     def client_message(self):

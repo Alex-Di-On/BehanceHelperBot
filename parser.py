@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from bot_answers import answers
 
 
 class Parser:
@@ -47,7 +48,7 @@ class Parser:
             self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
             return f'Country of {self.user_name}: {self.country} {self.get_flag_emoji(self.country)}'
         except AttributeError:
-            return f"{self.user_name} didn't indicate the country on the form."
+            return self.user_name + answers['no_country']
 
     def get_flag_emoji(self, place):
         """Getting the emoji flag."""

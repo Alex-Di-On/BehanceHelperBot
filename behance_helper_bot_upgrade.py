@@ -4,10 +4,11 @@ import sys
 import json
 import parser
 from config import private_token
+from bot_answers import answers
 
 
 class BehanceHelper:
-    """Базовый класс обработки ответа от API Telegram."""
+    """Response processing class from the Telegram API."""
 
     URL = 'https://api.telegram.org/bot'
     TOKEN = private_token
@@ -16,19 +17,20 @@ class BehanceHelper:
     behance_res = None
 
     def __init__(self, identification):
+        """Initialisation of Class Object."""
         self.identification = identification
 
     def get_update(self):
-        """Получаем результат POST-запроса к Telegram."""
+        """Getting the result of a POST request to Telegram."""
         method = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
         return requests.post(self.URL + self.TOKEN + method, data=data)
 
     def convert_response(self):
-        """Конвертируем ответ в json(), если статус ответа - 200."""
+        """Converting response to json() if response status is 200."""
         if self.get_update().status_code == 200:
             return self.get_update().json()
-        return sys.exit(f'Не удалось получить ответ от Telegram. Код ошибки: {self.get_update().status_code}.')
+        return sys.exit(answers['status_code_error'] + self.get_update().status_code)
 
     def get_client_id(self):
         """Получаем client_id или выводим в консоль результат запроса."""
@@ -110,7 +112,7 @@ def get_update_id(data):
 def get_update(id=0):
     """Получаем тело ответа на POST-запрос к боту, по найденному id."""
     method = '/getUpdates'
-    data = {'offset': id, 'limit': 1, 'timeout': 0}
+    data = {'offset': id, 'limit': 5, 'timeout': 0}
     return requests.post(BehanceHelper.URL + BehanceHelper.TOKEN + method, data=data)
 
 

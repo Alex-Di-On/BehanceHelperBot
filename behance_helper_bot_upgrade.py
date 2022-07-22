@@ -30,7 +30,7 @@ class BehanceHelper:
         """Converting response to json() if response status is 200."""
         if self.get_update().status_code == 200:
             return self.get_update().json()
-        return sys.exit(answers['status_code_error'] + self.get_update().status_code)
+        return sys.exit(answers['status_code_error'] + str(self.get_update().status_code))
 
     def get_client_id(self):
         """Получаем client_id или выводим в консоль результат запроса."""

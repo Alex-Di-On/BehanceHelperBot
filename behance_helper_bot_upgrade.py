@@ -52,7 +52,7 @@ class BehanceHelper:
         return True
 
     def text_validation(self):
-        """Call the method depending on the message received from the client."""
+        """Calling the method depending on the message received from the client."""
         if self.language_test(self.client_message()):
             command_message = ' '.join(self.client_message().split()[:-2])
             if self.client_message() == '/start':
@@ -65,35 +65,33 @@ class BehanceHelper:
                 self.send_menu()
 
     def send_start(self):
-        """Приветствуем Клиента."""
-        hello = "Please, input author's URL on Behance:"
+        """Sending a message to the Client for /start."""
         action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': hello}
+        body = {'chat_id': self.client_id, 'text': answers['/start']}
         return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def send_menu(self):
-        """Отправляем Клиенту меню."""
+        """Sending menu to the Client."""
         if self.url_validation():
-            hello = 'Please, select the menu item:'
             buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],
                                     [f'Following of {self.client_message()}'],
                                     [f'Country of {self.client_message()}']]}
             action = '/sendMessage'
-            body = {'chat_id': self.client_id, 'text': hello, 'reply_markup': json.dumps(buttons)}
+            body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)
         else:
-            self.send_info('This author has no portfolio on Behance.')
+            self.send_info(answers['no_portfolio'])
 
     def send_info(self, text):
-        """We send a response to the client."""
+        """Sending a info_response to the Client."""
         action = '/sendMessage'
         body = {'chat_id': self.client_id, 'text': text}
         return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def url_validation(self):
-        """Check that the author is registered on Behance."""
+        """Checking that the author is registered on Behance."""
         self.behance_res = requests.get(parser.Parser.WEB_PAGE + self.client_message())
         return self.behance_res.status_code == 200
 

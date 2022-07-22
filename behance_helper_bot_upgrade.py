@@ -66,8 +66,9 @@ class BehanceHelper:
 
     def send_start(self):
         """Sending a message to the Client for /start."""
+        keyboard_remove = {'remove_keyboard': True}
         action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': answers['/start']}
+        body = {'chat_id': self.client_id, 'text': answers['/start'], 'reply_markup': json.dumps(keyboard_remove)}
         return requests.post(self.URL + self.TOKEN + action, data=body)
 
     def send_menu(self):
@@ -78,7 +79,8 @@ class BehanceHelper:
                                     [f'Followers of {self.client_message()}'],
                                     [f'Following of {self.client_message()}'],
                                     [f'Country of {self.client_message()}'],
-                                    [f'CHANGE URL']]}
+                                    [f'CHANGE URL']],
+                       'one_time_keyboard': False}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)

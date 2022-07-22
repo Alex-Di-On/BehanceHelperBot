@@ -30,15 +30,15 @@ class BehanceHelper:
         """Converting response to json() if response status is 200."""
         if self.get_update().status_code == 200:
             return self.get_update().json()
-        return sys.exit(answers['status_code_error'] + str(self.get_update().status_code))
 
     def get_client_id(self):
         """Получаем client_id или выводим в консоль результат запроса."""
-        if not self.convert_response()['result']:
-            print('Никто не обращался к боту!')
-        else:
+        try:
             self.client_id = self.convert_response()['result'][0]['message']['from']['id']
             return True
+        except:
+            print(answers['nobody_calling'])
+            return False
 
     def client_message(self):
         """Получаем текст сообщения от Клиента."""
@@ -112,7 +112,7 @@ def get_update_id(data):
 def get_update(id=0):
     """Получаем тело ответа на POST-запрос к боту, по найденному id."""
     method = '/getUpdates'
-    data = {'offset': id, 'limit': 5, 'timeout': 0}
+    data = {'offset': id, 'limit': 1, 'timeout': 0}
     return requests.post(BehanceHelper.URL + BehanceHelper.TOKEN + method, data=data)
 
 

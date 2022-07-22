@@ -1,4 +1,4 @@
 # Dict with Bot answers:
 
-answers = {'status_code_error': 'Failed to receive a reply from Telegram. Error code:',
+answers = {'nobody_calling': "Bot hasn't received a new request from Client.",
            'no_country': "didn't indicate the country on the form."}

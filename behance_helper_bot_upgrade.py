@@ -75,7 +75,7 @@ class BehanceHelper:
     def send_menu(self):
         """Sending menu to the Client."""
         if self.url_validation():
-            connect_database(self.client_id, self.client_message().split()[-1])
+            connect_database(self.client_id, self.client_message())
             buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],

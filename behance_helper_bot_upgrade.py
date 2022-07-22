@@ -4,6 +4,7 @@ import json
 import parser
 from config import private_token
 from bot_answers import answers
+from behance_helper_bd import connect_database
 
 
 class BehanceHelper:
@@ -74,6 +75,7 @@ class BehanceHelper:
     def send_menu(self):
         """Sending menu to the Client."""
         if self.url_validation():
+            connect_database(self.client_id, self.client_message().split()[-1])
             buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],

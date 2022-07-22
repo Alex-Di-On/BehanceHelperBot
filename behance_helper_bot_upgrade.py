@@ -55,7 +55,7 @@ class BehanceHelper:
         """Calling the method depending on the message received from the client."""
         if self.language_test(self.client_message()):
             command_message = ' '.join(self.client_message().split()[:-2])
-            if self.client_message() == '/start':
+            if self.client_message() in ['/start', 'CHANGE URL']:
                 self.send_start()
             elif command_message in self.COMMAND_BOX:
                 user_name = self.client_message().split()[-1]

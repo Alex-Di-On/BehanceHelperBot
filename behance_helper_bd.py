@@ -15,22 +15,19 @@ def connect_database(id, url):
         print(error)
 
 
-
-# def get_url_history():
-#     try:
-#         with connect(host='31.31.196.38', user='u1726449_alex', password='vY9aQ3gX3x') as connection:
-#             print(connection)
-#             request_mysql = 'USE u1726449_default'
-#             request_select = "SELECT url_interface, id FROM behance_helper WHERE client_id=1172947980"
-#             print(request_select)
-#             with connection.cursor() as cursor:
-#                 cursor.execute(request_mysql)
-#                 cursor.execute(request_select)
-#                 result = cursor.fetchall()
-#                 for i in result:
-#                     print(i[0])
-#                 connection.commit()
-#     except Error as error:
-#         print(error)
-#
-# get_url_history()
+def get_url_history(id):
+    try:
+        with connect(host='31.31.196.38', user='u1726449_alex', password='vY9aQ3gX3x') as connection:
+            request_mysql = 'USE u1726449_default'
+            request_select = f"SELECT url_interface, id FROM behance_helper WHERE client_id={id}"
+            with connection.cursor() as cursor:
+                cursor.execute(request_mysql)
+                cursor.execute(request_select)
+                result = cursor.fetchall()
+                connection.commit()
+                result_string = ' '.join(list(set([i[0] for i in result])))
+                if len(result_string) == 0:
+                    return 'is empty.'
+                return result_string
+    except Error as error:
+        print(error)

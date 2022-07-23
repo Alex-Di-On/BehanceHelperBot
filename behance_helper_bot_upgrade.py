@@ -4,7 +4,7 @@ import json
 import parser
 from config import private_token
 from bot_answers import answers
-from behance_helper_bd import connect_database
+from behance_helper_bd import connect_database, get_url_history
 
 
 class BehanceHelper:
@@ -58,6 +58,8 @@ class BehanceHelper:
             command_message = ' '.join(self.client_message().split()[:-2])
             if self.client_message() in ['/start', 'CHANGE URL']:
                 self.send_start()
+            elif self.client_message() == 'REQUEST HISTORY':
+                self.get_request_history()
             elif command_message in self.COMMAND_BOX:
                 user_name = self.client_message().split()[-1]
                 object = parser.Parser(user_name, command_message)
@@ -100,6 +102,13 @@ class BehanceHelper:
         """Checking that the author is registered on Behance."""
         self.behance_res = requests.get(parser.Parser.WEB_PAGE + self.client_message())
         return self.behance_res.status_code == 200
+
+    def get_request_history(self):
+        """Sending the result of the database request to Client."""
+        try:
+            self.send_info(f'REQUEST HISTORY: {get_url_history(self.client_id)}')
+        except:
+            self.send_info(answers['error_db'])
 
 
 """Functional part for the initial launch of the script (trapping Start id)."""

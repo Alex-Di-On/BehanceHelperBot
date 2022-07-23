@@ -81,6 +81,7 @@ class BehanceHelper:
                                     [f'Followers of {self.client_message()}'],
                                     [f'Following of {self.client_message()}'],
                                     [f'Country of {self.client_message()}'],
+                                    [f'REQUEST HISTORY'],
                                     [f'CHANGE URL']],
                        'one_time_keyboard': False}
             action = '/sendMessage'

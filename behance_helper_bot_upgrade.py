@@ -2,7 +2,7 @@ import requests
 import time
 import json
 import parser
-from config import private_token
+from config import configuration
 from bot_answers import answers
 from behance_helper_bd import DataBaseAction
 
@@ -11,7 +11,7 @@ class BehanceHelper:
     """Response processing class from the Telegram API."""
 
     URL = 'https://api.telegram.org/bot'
-    TOKEN = private_token
+    TOKEN = configuration['token']
     COMMAND_BOX = ['Project Views', 'Appreciations', 'Followers', 'Following', 'Country']
     client_id = None
     behance_res = None
@@ -83,8 +83,8 @@ class BehanceHelper:
                                     [f'Followers of {self.client_message()}'],
                                     [f'Following of {self.client_message()}'],
                                     [f'Country of {self.client_message()}'],
-                                    [f'REQUEST HISTORY'],
-                                    [f'CHANGE URL']],
+                                    ['REQUEST HISTORY'],
+                                    ['CHANGE URL']],
                        'one_time_keyboard': False}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}

@@ -73,10 +73,3 @@ class DataBaseAction(DataBase):
             return result_string
         except Error as error:
             print(error)
-
-
-# data_base = DataBaseAction('31.31.196.38', 'u1726449_alex', 'eY4vT5pM6m', 'u1726449_default',
-#                            1172947980, 'bolimond')
-#
-# data_base.connect()
-# print(data_base.reading_data())

@@ -106,12 +106,12 @@ class BehanceHelper:
     def accessing_database(self, command):
         """Accessing the database to write/read data."""
         data_base = DataBaseAction('31.31.196.38', 'u1726449_alex', 'eY4vT5pM6m', 'u1726449_default',
-                            self.client_id, self.client_message())
+                                   self.client_id, self.client_message())
         data_base.connect()
         if command == 'insert_client_id_and_url':
             data_base.insert_data()
         elif command == 'select_client_id':
-            data_base.reading_data()
+            return data_base.reading_data()
 
     def get_request_history(self):
         """Sending the result of the database request to Client."""

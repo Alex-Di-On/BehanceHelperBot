@@ -4,7 +4,7 @@ import json
 import parser
 from config import private_token
 from bot_answers import answers
-from behance_helper_bd import connect_database, get_url_history
+from behance_helper_bd import DataBaseAction
 
 
 class BehanceHelper:
@@ -77,7 +77,7 @@ class BehanceHelper:
     def send_menu(self):
         """Sending menu to the Client."""
         if self.url_validation():
-            connect_database(self.client_id, self.client_message())
+            self.accessing_database('insert_id_and_url')
             buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],
@@ -102,6 +102,14 @@ class BehanceHelper:
         """Checking that the author is registered on Behance."""
         self.behance_res = requests.get(parser.Parser.WEB_PAGE + self.client_message())
         return self.behance_res.status_code == 200
+
+    def accessing_database(self, command):
+        """Accessing the database to write/read data."""
+        data_base = DataBaseAction('31.31.196.38', 'u1726449_alex', 'eY4vT5pM6m', 'u1726449_default',
+                            self.client_id, self.client_message())
+        data_base.connect()
+        if command == 'insert_id_and_url':
+            data_base.insert_data()
 
     def get_request_history(self):
         """Sending the result of the database request to Client."""

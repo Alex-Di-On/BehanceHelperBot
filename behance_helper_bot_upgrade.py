@@ -78,14 +78,9 @@ class BehanceHelper:
         """Sending menu to the Client."""
         if self.url_validation():
             self.accessing_database('insert_client_id_and_url')
-            buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
-                                    [f'Appreciations of {self.client_message()}'],
-                                    [f'Followers of {self.client_message()}'],
-                                    [f'Following of {self.client_message()}'],
-                                    [f'Country of {self.client_message()}'],
-                                    ['REQUEST HISTORY'],
-                                    ['CHANGE URL']],
-                       'one_time_keyboard': False}
+            templates = ['Project Views of ', 'Appreciations of ', 'Followers of ', 'Following of ', 'Country of ']
+            buttons_list = [[i + self.client_message()] for i in templates] + [['REQUEST HISTORY'], ['CHANGE URL']]
+            buttons = {'keyboard': buttons_list, 'one_time_keyboard': False}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)

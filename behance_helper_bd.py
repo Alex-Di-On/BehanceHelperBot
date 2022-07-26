@@ -56,9 +56,12 @@ class DataBaseAction(DataBase):
     def reading_data(self):
         """Reading data from database."""
         self.request_reading = f'''
-        SELECT url_interface, id 
-        FROM behance_helper
-        WHERE client_id={self.id}
+        SELECT
+            url_interface, id
+        FROM
+            behance_helper
+        WHERE
+            client_id='{str(self.id)}'
         '''
         try:
             self.cursor.execute(self.request_reading)
@@ -72,6 +75,10 @@ class DataBaseAction(DataBase):
             print(error)
 
 
+data_base = DataBaseAction('31.31.196.38', 'u1726449_alex', 'eY4vT5pM6m', 'u1726449_default', 1172947980, 'bolimond')
+data_base.connect()
+# data_base.insert_data()
+print(data_base.reading_data())
 
 
 # def connect_database(id, url):
@@ -90,7 +97,7 @@ class DataBaseAction(DataBase):
 #
 # def get_url_history(id):
 #     try:
-#         with connect(host='31.31.196.38', user='u1726449_alex', password='vY9aQ3gX3x') as connection:
+#         with connect(host='31.31.196.38', user='u1726449_alex', password='eY4vT5pM6m') as connection:
 #             request_mysql = 'USE u1726449_default'
 #             request_select = f"SELECT url_interface, id FROM behance_helper WHERE client_id={id}"
 #             with connection.cursor() as cursor:
@@ -104,3 +111,5 @@ class DataBaseAction(DataBase):
 #                 return result_string
 #     except Error as error:
 #         print(error)
+#
+# print(get_url_history(1172947980))

@@ -77,7 +77,7 @@ class BehanceHelper:
     def send_menu(self):
         """Sending menu to the Client."""
         if self.url_validation():
-            self.accessing_database('insert_id_and_url')
+            self.accessing_database('insert_client_id_and_url')
             buttons = {'keyboard': [[f'Project Views of {self.client_message()}'],
                                     [f'Appreciations of {self.client_message()}'],
                                     [f'Followers of {self.client_message()}'],
@@ -108,13 +108,15 @@ class BehanceHelper:
         data_base = DataBaseAction('31.31.196.38', 'u1726449_alex', 'eY4vT5pM6m', 'u1726449_default',
                             self.client_id, self.client_message())
         data_base.connect()
-        if command == 'insert_id_and_url':
+        if command == 'insert_client_id_and_url':
             data_base.insert_data()
+        elif command == 'select_client_id':
+            data_base.reading_data()
 
     def get_request_history(self):
         """Sending the result of the database request to Client."""
         try:
-            self.send_info(f'REQUEST HISTORY: {get_url_history(self.client_id)}')
+            self.send_info(f"REQUEST HISTORY: {self.accessing_database('select_client_id')}")
         except:
             self.send_info(answers['error_db'])
 

@@ -46,6 +46,8 @@ class Parser:
         """Return information of author's location."""
         try:
             self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
+            if self.country.split()[-1] == 'Federation':
+                self.country = 'Russia'
             return f'Country of {self.user_name}: {self.country} {self.get_flag_emoji(self.country)}'
         except AttributeError:
             return self.user_name + answers['no_country']

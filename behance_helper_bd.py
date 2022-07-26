@@ -65,8 +65,8 @@ class DataBaseAction(DataBase):
         '''
         try:
             self.cursor.execute(self.request_reading)
-            self.connection.commit()
             result = self.cursor.fetchall()
+            self.connection.commit()
             result_string = ' '.join(list(set([i[0] for i in result])))
             if len(result_string) == 0:
                 return 'is empty.'

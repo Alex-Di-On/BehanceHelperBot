@@ -1,5 +1,4 @@
 import requests
-import time
 import json
 import parser
 from config import configuration
@@ -114,31 +113,3 @@ class BehanceHelper:
             self.send_info(f"REQUEST HISTORY: {self.accessing_database('select_client_id')}")
         except:
             self.send_info(answers['error_db'])
-
-
-"""Functional part for the initial launch of the script (trapping Start id)."""
-
-
-def get_update_id(data):
-    """Getting id of the last message sent to the bot."""
-    if not data['result']:
-        return 0
-    return data['result'][0]['update_id']
-
-
-def get_update(id=0):
-    """Getting the response body of the POST request to the bot, by the id found."""
-    method = '/getUpdates'
-    data = {'offset': id, 'limit': 1, 'timeout': 0}
-    return requests.post(BehanceHelper.URL + BehanceHelper.TOKEN + method, data=data)
-
-
-if __name__ == '__main__':
-    id = get_update_id(get_update().json())
-    print(f'Start id: {id}')
-    while True:
-        time.sleep(0.5)
-        helper = BehanceHelper(id)
-        if helper.get_client_id():
-            helper.text_validation()
-            id += 1

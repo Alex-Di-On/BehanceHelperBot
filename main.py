@@ -19,11 +19,11 @@ def get_update(value=0):
 
 
 if __name__ == '__main__':
-    id = get_update_id(get_update().json())
-    print(f'Start id: {id}')
+    update_id = get_update_id(get_update().json())
+    print(f'Start update_id: {update_id}')
     while True:
         time.sleep(0.5)
-        helper = BehanceHelper(id)
+        helper = BehanceHelper(update_id)
         if helper.get_client_id():
             helper.text_validation()
-            id += 1
+            update_id += 1

@@ -28,7 +28,7 @@ class DataBase:
 
 
 class DataBaseAction(DataBase):
-    """Class for interacting with database."""
+    """Database management class."""
 
     request_insert = None
     request_reading = None
@@ -40,7 +40,7 @@ class DataBaseAction(DataBase):
         self.url = url
 
     def insert_data(self):
-        """Writing data into database."""
+        """Insert data into database."""
         self.request_insert = f'''
         INSERT INTO behance_helper (
             client_id,
@@ -54,7 +54,7 @@ class DataBaseAction(DataBase):
             print(error)
 
     def reading_data(self):
-        """Reading data from database."""
+        """Return info (set urls) from database."""
         self.request_reading = f'''
         SELECT
             url_interface, id

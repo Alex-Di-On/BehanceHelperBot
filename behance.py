@@ -2,7 +2,7 @@ import requests
 import json
 import parser
 from config import configuration
-from bot_answers import answers
+from answers import answers
 from behance_helper_bd import DataBaseAction
 
 
@@ -61,7 +61,7 @@ class BehanceHelper:
                 self.get_request_history()
             elif command_message in self.COMMAND_BOX:
                 user_name = self.client_message().split()[-1]
-                object = parser.Parser(user_name, command_message)
+                object = parser.ParserBehance(user_name, command_message)
                 self.send_info(object.get_behance_info())
             else:
                 self.send_menu()
@@ -94,7 +94,7 @@ class BehanceHelper:
 
     def url_validation(self):
         """Checking that the author is registered on Behance."""
-        self.behance_res = requests.get(parser.Parser.WEB_PAGE + self.client_message())
+        self.behance_res = requests.get(parser.ParserBehance.WEB_PAGE + self.client_message())
         return self.behance_res.status_code == 200
 
     def accessing_database(self, command):

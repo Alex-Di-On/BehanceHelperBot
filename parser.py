@@ -1,13 +1,14 @@
-from bs4 import BeautifulSoup
 import requests
-from bot_answers import answers
+from bs4 import BeautifulSoup
+
+from answers import answers
+from emoji import EmojiFlag
 
 
-class Parser:
+class ParserBehance:
     """Parser of the author's web page on Behance."""
 
     WEB_PAGE = 'https://www.behance.net/'
-    URL_EMOJI = 'https://emojipedia.org/flag-'
     INFO_DICT = {'Project Views': '0', 'Appreciations': '0', 'Followers': '0', 'Following': '0'}
     country = None
 
@@ -48,12 +49,7 @@ class Parser:
             self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
             if self.country.split()[-1] == 'Federation':
                 self.country = 'Russia'
-            return f'Country of {self.user_name}: {self.country} {self.get_flag_emoji(self.country)}'
+            flag = EmojiFlag(self.country)
+            return f'Country of {self.user_name}: {self.country} {flag.get_flag_emoji()}'
         except AttributeError:
             return self.user_name + answers['no_country']
-
-    def get_flag_emoji(self, place):
-        """Getting the emoji flag."""
-        place = place.split()
-        res = BeautifulSoup(requests.get(self.URL_EMOJI + place[-1].lower()).text, 'html.parser').find('title').text
-        return res.split()[0]

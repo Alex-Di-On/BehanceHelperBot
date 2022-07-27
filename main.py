@@ -1,7 +1,7 @@
 import requests
 import time
 
-from behance_helper import BehanceHelper
+from behance import BehanceHelper
 
 
 def get_update_id(data):

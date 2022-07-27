@@ -61,8 +61,8 @@ class BehanceHelper:
                 self.get_request_history()
             elif command_message in self.COMMAND_BOX:
                 user_name = self.client_message().split()[-1]
-                object = parser.ParserBehance(user_name, command_message)
-                self.send_info(object.get_behance_stat_info())
+                info = parser.ParserBehance(user_name, command_message)
+                self.send_info(info.get_info())
             else:
                 self.send_menu()
 

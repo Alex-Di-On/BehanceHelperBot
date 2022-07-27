@@ -35,16 +35,6 @@ class ParserBehance:
         except AttributeError:
             return self.INFO_DICT
 
-    def get_behance_stat_info(self):
-        """Return information (string) using command_message to dict with information about author statistics or
-        if there is no key in dict return information (string) with zero value. For Country use another method."""
-        try:
-            if self.command_message == 'Country':
-                return self.get_location_info()
-            return f'{self.command_message} of {self.user_name}: {self.get_stat_dict()[self.command_message]}'
-        except KeyError:
-            return f'{self.command_message} of {self.user_name}: 0'
-
     def get_country(self):
         """Return self.country."""
         self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
@@ -53,9 +43,19 @@ class ParserBehance:
         return self.country
 
     def get_location_info(self):
-        """Return information (string) of author's location. If author hasn't mentioned a location """
+        """Return information (string) of author's location. """
         try:
             flag = EmojiFlag(self.get_country())
             return f'Country of {self.user_name}: {self.country} {flag.get_flag_emoji()}'
         except AttributeError:
             return self.user_name + answers['no_country']
+
+    def get_info(self):
+        """Return information (string) using command_message to dict with information about author statistics or
+        if there is no key in dict return information (string) with zero value. For Country use special method."""
+        try:
+            if self.command_message == 'Country':
+                return self.get_location_info()
+            return f'{self.command_message} of {self.user_name}: {self.get_stat_dict()[self.command_message]}'
+        except KeyError:
+            return f'{self.command_message} of {self.user_name}: 0'

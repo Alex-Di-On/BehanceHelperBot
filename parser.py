@@ -41,6 +41,8 @@ class ParserBehance:
         self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
         if self.country.split()[-1] == 'Federation':
             self.country = 'Russia'
+        elif self.country.split()[-1] == 'China':
+            self.country = 'China'
         return self.country
 
     def country_validation(self):

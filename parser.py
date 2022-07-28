@@ -2,7 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from answers import answers
-from emoji import EmojiFlag
+from database import DataBase
+from config import configuration
 
 
 class ParserBehance:
@@ -42,11 +43,28 @@ class ParserBehance:
             self.country = 'Russia'
         return self.country
 
+    def country_validation(self):
+        """Checking if the country listed by the author is in our database."""
+        data_base = DataBase(configuration['host'], configuration['user'],
+                             configuration['password'], configuration['database'])
+        data_base.connect()
+        if self.get_country() in data_base.reading_all_countries():
+            return True
+        return False
+
+    def return_flag(self):
+        """Return emoji_flag"""
+        data_base = DataBase(configuration['host'], configuration['user'],
+                             configuration['password'], configuration['database'])
+        data_base.connect()
+        return data_base.reading_emoji_flag(self.get_country())
+
     def get_location_info(self):
         """Return information (string) of author's location. """
         try:
-            flag = EmojiFlag(self.get_country())
-            return f'Country of {self.user_name}: {self.country} {flag.get_flag_emoji()}'
+            if self.country_validation():
+                return f'Country of {self.user_name}: {self.country} {self.return_flag()}'
+            return f'Country of {self.user_name}: {self.country}'
         except AttributeError:
             return self.user_name + answers['no_country']
 

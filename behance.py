@@ -98,7 +98,7 @@ class BehanceHelper:
     def accessing_database(self, command):
         """Accessing the database to write/read data."""
         data_base = DataBase(configuration['host'], configuration['user'],
-                             configuration['password'], configuration['database'],)
+                             configuration['password'], configuration['database'])
         data_base.connect()
         if command == 'insert_client_id_and_url':
             data_base.insert_data(self.client_id, self.client_message())

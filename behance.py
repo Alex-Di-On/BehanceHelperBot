@@ -4,7 +4,8 @@ import json
 from parser import ParserBehance
 from config import configuration
 from answers import answers
-from database import DataBaseAction
+from database import DataBase
+from templates import buttons_menu
 
 
 class BehanceHelper:
@@ -69,7 +70,7 @@ class BehanceHelper:
     def get_request_history(self):
         """Sending the result of the database request to Client."""
         try:
-            self.send_info(f"REQUEST HISTORY: {self.accessing_database('select_client_id')}")
+            self.send_info(f"REQUEST HISTORY: {self.accessing_database('select_history_client_id')}")
         except:
             self.send_info(answers['error_db'])
 
@@ -83,9 +84,9 @@ class BehanceHelper:
         """Sending menu to the Client if self.url_validation is True."""
         if self.url_validation():
             self.accessing_database('insert_client_id_and_url')
-            templates = ['Project Views of ', 'Appreciations of ', 'Followers of ', 'Following of ', 'Country of ']
-            buttons_list = [[i + self.client_message()] for i in templates] + [['REQUEST HISTORY'], ['CHANGE URL']]
-            buttons = {'keyboard': buttons_list, 'one_time_keyboard': False}
+            # templates = ['Project Views of ', 'Appreciations of ', 'Followers of ', 'Following of ', 'Country of ']
+            # buttons_list = [[i + self.client_message()] for i in templates] + [['REQUEST HISTORY'], ['CHANGE URL']]
+            buttons = {'keyboard': buttons_menu, 'one_time_keyboard': False}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}
             return requests.post(self.URL + self.TOKEN + action, data=body)
@@ -99,13 +100,15 @@ class BehanceHelper:
 
     def accessing_database(self, command):
         """Accessing the database to write/read data."""
-        data_base = DataBaseAction('31.31.196.38', 'u1726449_alex', 'eY4vT5pM6m', 'u1726449_default',
-                                   self.client_id, self.client_message())
+        data_base = DataBase(configuration['host'], configuration['user'],
+                             configuration['password'], configuration['database'],)
         data_base.connect()
         if command == 'insert_client_id_and_url':
-            data_base.insert_data()
-        elif command == 'select_client_id':
-            return data_base.reading_data()
+            data_base.insert_data(self.client_id, self.client_message())
+        elif command == 'select_last_note':
+            return data_base.reading_last_note(self.client_id)
+        elif command == 'select_history_client_id':
+            return data_base.reading_history(self.client_id)
 
     def language_test(self, word):
         """Return True if message is written in English or False."""

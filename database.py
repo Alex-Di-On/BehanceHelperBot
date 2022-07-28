@@ -86,7 +86,7 @@ class DataBase:
             print(error)
 
     def reading_all_countries(self):
-        """Return emoji flag from database by location."""
+        """Return array of all countries from database."""
         self.request_all_countries = f'''
         SELECT
             country, id

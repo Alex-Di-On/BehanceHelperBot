@@ -48,14 +48,13 @@ class BehanceHelper:
     def text_validation(self):
         """Calling the method depending on the message received from the client."""
         if self.language_test(self.client_message()):
-            command_message = ' '.join(self.client_message().split()[:-2])
             if self.client_message() in ['/start', 'CHANGE URL']:
                 self.send_start()
             elif self.client_message() == 'REQUEST HISTORY':
                 self.get_request_history()
-            elif command_message in self.COMMAND_BOX:
-                user_name = self.client_message().split()[-1]
-                info = ParserBehance(user_name, command_message)
+            elif self.client_message() in self.COMMAND_BOX:
+                user_name = self.accessing_database('select_last_note')
+                info = ParserBehance(user_name, self.client_message())
                 self.send_info(info.get_info())
             else:
                 self.send_menu()
@@ -84,8 +83,6 @@ class BehanceHelper:
         """Sending menu to the Client if self.url_validation is True."""
         if self.url_validation():
             self.accessing_database('insert_client_id_and_url')
-            # templates = ['Project Views of ', 'Appreciations of ', 'Followers of ', 'Following of ', 'Country of ']
-            # buttons_list = [[i + self.client_message()] for i in templates] + [['REQUEST HISTORY'], ['CHANGE URL']]
             buttons = {'keyboard': buttons_menu, 'one_time_keyboard': False}
             action = '/sendMessage'
             body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}

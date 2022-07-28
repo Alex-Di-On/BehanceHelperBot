@@ -9,6 +9,8 @@ class DataBase:
     request_data_insert = None
     request_reading_last_note = None
     request_reading_history = None
+    request_emoji_flag = None
+    request_all_countries = None
 
     def __init__(self, host, user, password, database):
         """Initialisation of Class Object."""
@@ -80,5 +82,39 @@ class DataBase:
             if len(result_string) == 0:
                 return 'is empty.'
             return result_string
+        except Error as error:
+            print(error)
+
+    def reading_all_countries(self):
+        """Return emoji flag from database by location."""
+        self.request_all_countries = f'''
+        SELECT
+            country, id
+        FROM
+            emoji_flags
+        '''
+        try:
+            self.cursor.execute(self.request_all_countries)
+            result = self.cursor.fetchall()
+            self.connection.commit()
+            countries = [i[0] for i in result]
+            return countries
+        except Error as error:
+            print(error)
+
+    def reading_emoji_flag(self, location):
+        """Return emoji flag from database by location."""
+        self.request_emoji_flag = f'''
+        SELECT
+            flag, id
+        FROM
+            emoji_flags
+        WHERE country = '{location}'
+        '''
+        try:
+            self.cursor.execute(self.request_emoji_flag)
+            result = self.cursor.fetchall()
+            self.connection.commit()
+            return result[0][0].lower()
         except Error as error:
             print(error)

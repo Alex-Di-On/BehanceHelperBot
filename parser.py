@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 from answers import answers
 from database import DataBase
+import database
 from config import configuration
 
 
@@ -79,3 +80,4 @@ class ParserBehance:
             return f'{self.command_message} of {self.user_name}: {self.get_stat_dict()[self.command_message]}'
         except KeyError:
             return f'{self.command_message} of {self.user_name}: 0'
+

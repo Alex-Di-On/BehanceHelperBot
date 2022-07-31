@@ -30,7 +30,8 @@ class TelegramAPI:
         """Return text message from Client."""
         return self.get_update().json()['result'][0]['message']['text']
 
-    def foo(self, text: str, command: str = None, button: list = None) -> None:
+    def send_message(self, text: str, command: str = None, button: list = None) -> None:
+        """Sending message to Client."""
         data = {'chat_id': self.get_client_id(), 'text': text}
         match command:
             case 'set_buttons':
@@ -38,12 +39,3 @@ class TelegramAPI:
             case 'del_buttons':
                 data['reply_markup'] = json.dumps({'remove_keyboard': True})
         self.get_post_request('/sendMessage', data)
-
-
-a = TelegramAPI(99021817)
-print(a.get_client_id())  # 1172947980
-
-# a.foo('привет')
-# a.foo('вот кнопки', 'set_buttons', [['1'], ['2']])
-a.foo('убираем', 'del_buttons')
-

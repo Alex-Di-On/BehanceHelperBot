@@ -31,23 +31,26 @@ class TelegramAPI:
         """Return text message from Client."""
         return self.get_update().json()['result'][0]['message']['text']
 
-    def set_message_data(self, text: str) -> dict:
+    def set_message_data(self, text: str) -> None:
         """Return data for setting message to Client."""
-        return {'chat_id': self.get_client_id(), 'text': text}
+        data = {'chat_id': self.get_client_id(), 'text': text}
+        self.get_post_request('/sendMessage', data)
 
-    def set_buttons_data(self, button: list, text: str) -> dict:
+    def set_buttons_data(self, button: list, text: str) -> None:
         """Return data for setting buttons to Client."""
         buttons = {'keyboard': button, 'one_time_keyboard': False}
-        return {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(buttons)}
+        data = {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(buttons)}
+        self.get_post_request('/sendMessage', data)
 
-    def del_buttons_data(self, text: str) -> dict:
+    def del_buttons_data(self, text: str) -> None:
         """Return data for removing buttons from Client."""
         keyboard_remove = {'remove_keyboard': True}
-        return {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(keyboard_remove)}
+        data = {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(keyboard_remove)}
+        self.get_post_request('/sendMessage', data)
 
 
-# a = TelegramAPI(99021817)
-# print(a.get_client_id())  # 1172947980
-# a.get_post_request('/sendMessage', a.set_buttons_data([['1'], ['2']], 'как дела?'))
+a = TelegramAPI(99021817)
+print(a.get_client_id())  # 1172947980
+a.set_buttons_data([['1'], ['2']], 'как дела?')
 # a.get_post_request('/sendMessage', a.del_buttons_data('убрали'))
 # a.get_post_request('/sendMessage', a.set_message_data('ffff'))

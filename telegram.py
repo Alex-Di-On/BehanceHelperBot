@@ -23,8 +23,9 @@ class TelegramAPI:
         """Getting info about Client."""
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
         response = self.get_post_request('/getUpdates', data)
-        self.client_id = response.json()['result'][0]['message']['from']['id']
-        self.message = response.json()['result'][0]['message']['text']
+        way = response.json()['result'][0]['message']
+        self.client_id = way['from']['id']
+        self.message = way['text']
 
     def send_message(self, text: str, command: str = None, button: list = None) -> None:
         """Sending message to Client."""

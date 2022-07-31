@@ -15,9 +15,9 @@ class TelegramAPI:
 
     def get_update(self) -> requests.models.Response:
         """Return Response from Telegram."""
-        method = '/getUpdates'
+        action = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        return requests.post(self.URL + self.TOKEN + method, data=data)
+        return requests.post(self.URL + self.TOKEN + action, data=data)
 
     def get_client_id(self) -> int:
         """Return Client id."""
@@ -27,22 +27,25 @@ class TelegramAPI:
         """Return text message from Client."""
         return self.get_update().json()['result'][0]['message']['text']
 
-    def send_message(self, text: str) -> requests.models.Response:
+    def send_message(self, text: str) -> dict:
         """Sending message to Client."""
-        action = '/sendMessage'
-        body = {'chat_id': self.get_client_id(), 'text': text}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
+        return {'chat_id': self.get_client_id(), 'text': text}
 
-    def send_buttons(self, button: list, text: str) -> requests.models.Response:
-        """Sending buttons with message to Client."""
+    def set_buttons_data(self, button: list, text: str) -> dict:
+        """Return data for setting buttons to Client."""
         buttons = {'keyboard': button, 'one_time_keyboard': False}
-        action = '/sendMessage'
-        body = {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(buttons)}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
+        return {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(buttons)}
 
-    def del_buttons(self, text: str) -> requests.models.Response:
-        """Removing buttons from Client."""
+    def del_buttons_data(self, text: str) -> dict:
+        """Return data for removing buttons from Client."""
         keyboard_remove = {'remove_keyboard': True}
-        action = '/sendMessage'
-        body = {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(keyboard_remove)}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
+        return {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(keyboard_remove)}
+
+    def get_post_request(self, method: str, body: dict):
+        return requests.post(self.URL + self.TOKEN + method, data=body)
+
+
+# a = TelegramAPI(99021816)
+# print(a.get_client_id())  # 1172947980
+# a.get_post_request('/sendMessage', a.set_buttons_data([['1'], ['2']], 'как дела?'))
+# a.get_post_request('/sendMessage', a.del_buttons_data('убрали'))

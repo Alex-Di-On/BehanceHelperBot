@@ -21,9 +21,6 @@ def get_update(value=0):
 if __name__ == '__main__':
     update_id = get_update_id(get_update().json())
     print(f'Start update_id: {update_id}')
-    while True:
-        time.sleep(0.5)
-        helper = TelegramAPI(update_id)
-        # if helper.get_client_id():
-        #     helper.text_validation()
-        #     update_id += 1
+    # while True:
+    #     time.sleep(0.5)
+

@@ -1,17 +1,14 @@
+import emoji
+import requests
 
-class Word:
-
-    def __init__(self, cls):
-        self._cls = cls
-
-    def hello(self):
-        print('Hello, Victor!')
+print(emoji.emojize(':Russia:'))
 
 
-@Word
-class Sign:
-    pass
+def get_update():
+    """Return POST-request to Telegram."""
+    method = '/getUpdates'
+    data = {'offset': 0, 'limit': 1, 'timeout': 0}
+    return requests.post('https://api.telegram.org/bot' + '5560947865:AAFIU9dUBg5pZZ5RatXkUf6nM995TbnPgMU' + method, data=data)
 
 
-a = Sign
-print(a.hello())
+print(type(get_update()))

@@ -59,7 +59,7 @@ class DataBase(metaclass=MetaSingleton):
 
 
 class User:
-    request_data_insert = None
+    request = None
 
     def __init__(self, cursor, id, url):
         self.cursor = cursor
@@ -71,23 +71,30 @@ class User:
     # request_emoji_flag = None
     # request_all_countries = None
 
+
     def query(self, command):
-        if command == 'insert':
-            self.insert_data()
+        match command:
+            case 'insert':
+                self.request = self.insert_data()
+        try:
+            self.cursor.execute(self.request)
+            db1.save()
+        except Error as error:
+            print(error)
+
+
 
     def insert_data(self):
         """Insert data into database."""
-        self.request_data_insert = f'''
+        return f'''
         INSERT INTO behance_helper (
             client_id,
             url_interface)
         VALUES ('{self.id}', '{self.url}')
         '''
-        try:
-            self.cursor.execute(self.request_data_insert)
-            db1.save()
-        except Error as error:
-            print(error)
+
+
+
 
 
 db1 = DataBase()

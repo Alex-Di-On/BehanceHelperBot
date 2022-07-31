@@ -1,7 +1,7 @@
 import requests
 import time
 
-from behance import BehanceHelper
+from telegram import TelegramAPI
 
 
 def get_update_id(data):
@@ -15,7 +15,7 @@ def get_update(value=0):
     """Return POST-request for reading info about the Client's last request to the Bot."""
     method = '/getUpdates'
     data = {'offset': value, 'limit': 1, 'timeout': 0}
-    return requests.post(BehanceHelper.URL + BehanceHelper.TOKEN + method, data=data)
+    return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
 
 
 if __name__ == '__main__':
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     print(f'Start update_id: {update_id}')
     while True:
         time.sleep(0.5)
-        helper = BehanceHelper(update_id)
-        if helper.get_client_id():
-            helper.text_validation()
-            update_id += 1
+        helper = TelegramAPI(update_id)
+        # if helper.get_client_id():
+        #     helper.text_validation()
+        #     update_id += 1

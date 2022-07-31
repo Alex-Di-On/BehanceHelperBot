@@ -41,9 +41,9 @@ from templates import buttons_menu
     #         print(answers['nobody_calling'] + str(self.get_update().status_code))
     #         return False
 
-    def client_message(self) -> str:
-        """Return text message from Client."""
-        return self.convert_response()['result'][0]['message']['text']
+    # def client_message(self) -> str:
+    #     """Return text message from Client."""
+    #     return self.convert_response()['result'][0]['message']['text']
 
 
     def send_start(self) -> requests.models.Response:

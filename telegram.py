@@ -19,9 +19,8 @@ class TelegramAPI:
 
     def get_update(self) -> requests.models.Response:
         """Return Response from Telegram."""
-        action = '/getUpdates'
         data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        return self.get_post_request(action, data)
+        return self.get_post_request('/getUpdates', data)
 
     def get_client_id(self) -> int:
         """Return Client id."""
@@ -31,26 +30,20 @@ class TelegramAPI:
         """Return text message from Client."""
         return self.get_update().json()['result'][0]['message']['text']
 
-    def set_message_data(self, text: str) -> None:
-        """Return data for setting message to Client."""
+    def foo(self, text: str, command: str = None, button: list = None) -> None:
         data = {'chat_id': self.get_client_id(), 'text': text}
-        self.get_post_request('/sendMessage', data)
-
-    def set_buttons_data(self, button: list, text: str) -> None:
-        """Return data for setting buttons to Client."""
-        buttons = {'keyboard': button, 'one_time_keyboard': False}
-        data = {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(buttons)}
-        self.get_post_request('/sendMessage', data)
-
-    def del_buttons_data(self, text: str) -> None:
-        """Return data for removing buttons from Client."""
-        keyboard_remove = {'remove_keyboard': True}
-        data = {'chat_id': self.get_client_id(), 'text': text, 'reply_markup': json.dumps(keyboard_remove)}
+        match command:
+            case 'set_buttons':
+                data['reply_markup'] = json.dumps({'keyboard': button, 'one_time_keyboard': False})
+            case 'del_buttons':
+                data['reply_markup'] = json.dumps({'remove_keyboard': True})
         self.get_post_request('/sendMessage', data)
 
 
 a = TelegramAPI(99021817)
 print(a.get_client_id())  # 1172947980
-a.set_buttons_data([['1'], ['2']], 'как дела?')
-# a.get_post_request('/sendMessage', a.del_buttons_data('убрали'))
-# a.get_post_request('/sendMessage', a.set_message_data('ffff'))
+
+# a.foo('привет')
+# a.foo('вот кнопки', 'set_buttons', [['1'], ['2']])
+a.foo('убираем', 'del_buttons')
+

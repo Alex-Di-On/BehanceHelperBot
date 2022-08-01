@@ -5,79 +5,6 @@ from parser import ParserBehance
 from config import configuration
 from answers import answers
 from database import DataBase
-from templates import buttons_menu
-
-
-# class BehanceHelper:
-#     """Response processing class from the Telegram API."""
-#
-#     URL = 'https://api.telegram.org/bot'
-#     TOKEN = configuration['token']
-#     COMMAND_BOX = ['Project Views', 'Appreciations', 'Followers', 'Following', 'Country']
-#     client_id = None
-#     behance_res = None
-#
-#     def __init__(self, identification: int):
-#         """Initialisation of Class Object."""
-#         self.identification = identification
-
-    # def get_update(self) -> requests.models.Response:
-    #     """Return POST-request to Telegram."""
-    #     method = '/getUpdates'
-    #     data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-    #     return requests.post(self.URL + self.TOKEN + method, data=data)
-
-    # def convert_response(self) -> dict:
-    #     """Return self.get_update().json() if response status is 200."""
-    #     if self.get_update().status_code == 200:
-    #         return self.get_update().json()
-
-    # def get_client_id(self) -> bool:
-    #     """Getting client_id or output the result of the query to the console. Return True or False."""
-    #     try:
-    #         self.client_id = self.convert_response()['result'][0]['message']['from']['id']
-    #         return True
-    #     except:
-    #         print(answers['nobody_calling'] + str(self.get_update().status_code))
-    #         return False
-
-    # def client_message(self) -> str:
-    #     """Return text message from Client."""
-    #     return self.convert_response()['result'][0]['message']['text']
-
-
-    def send_start(self) -> requests.models.Response:
-        """Sending a message to the Client for /start."""
-        keyboard_remove = {'remove_keyboard': True}
-        action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': answers['/start'], 'reply_markup': json.dumps(keyboard_remove)}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
-
-    def send_info(self, text) -> requests.models.Response:
-        """Sending info_response to the Client."""
-        action = '/sendMessage'
-        body = {'chat_id': self.client_id, 'text': text}
-        return requests.post(self.URL + self.TOKEN + action, data=body)
-
-
-
-    def send_menu(self):
-        """Sending menu to the Client if self.url_validation is True."""
-        if self.url_validation():
-            self.accessing_database('insert_client_id_and_url')
-            buttons = {'keyboard': buttons_menu, 'one_time_keyboard': False}
-            action = '/sendMessage'
-            body = {'chat_id': self.client_id, 'text': answers['menu'], 'reply_markup': json.dumps(buttons)}
-            return requests.post(self.URL + self.TOKEN + action, data=body)
-        else:
-            self.send_info(answers['no_portfolio'])
-
-
-
-
-
-
-
 
 
     def text_validation(self) -> None:
@@ -102,10 +29,7 @@ from templates import buttons_menu
             self.send_info(answers['error_db'])
 
 
-    def url_validation(self) -> bool:
-        """Return True or False if author is registered on Behance."""
-        self.behance_res = requests.get(ParserBehance.WEB_PAGE + self.client_message())
-        return self.behance_res.status_code == 200
+
 
     def accessing_database(self, command):
         """Accessing the database to write/read data."""

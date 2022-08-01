@@ -38,6 +38,8 @@ if __name__ == '__main__':
         try:
             bot = TelegramAPI(update_id)
             bot.get_info()
+
+
             print(bot.client_id)
             print(bot.message)
             update_id += 1

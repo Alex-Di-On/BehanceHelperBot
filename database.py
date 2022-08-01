@@ -32,6 +32,10 @@ class DataBase(metaclass=MetaSingleton):
                                         password=self.__password, database=self.__database)
             self.__cursor = self.__connection.cursor()
 
+    def check_connection(self) -> bool:
+        """Return status of connection."""
+        return self.__connection.is_connected()
+
     def call_database(self, command: str, id: int, url: str = None) -> None:
         """Calling to database."""
         request = None

@@ -1,4 +1,6 @@
 import requests
+import sys
+from mysql.connector import Error
 import time
 import emoji
 
@@ -24,6 +26,11 @@ def get_update(value: int = 0) -> requests.models.Response:
 
 
 if __name__ == '__main__':
+    try:
+        database = DataBase()
+        database.connection()
+    except Error:
+        sys.exit('No connection to database. Bot is not activated.')
     update_id = get_update_id(get_update().json())
     print(f'Start update_id: {update_id}')
     while True:

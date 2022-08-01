@@ -30,7 +30,7 @@ if __name__ == '__main__':
         database = DataBase()
         database.connection()
     except Error:
-        sys.exit('No connection to database. Bot is not activated.')
+        sys.exit(answers['quit'])
     update_id = get_update_id(get_update().json())
     print(f'Start update_id: {update_id}')
     while True:
@@ -41,10 +41,10 @@ if __name__ == '__main__':
             if database.check_connection():
                 pass
             else:
-                bot.send_message("Sorry, I can't answer you at the moment. Try again later.")
+                bot.send_message(answers['error_db'])
             update_id += 1
         except IndexError:
-            print('No one texted to bot!')
+            print(answers['nobody_texted'])
 
 
 # print(emoji.emojize(':Russia:'))

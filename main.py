@@ -38,32 +38,13 @@ if __name__ == '__main__':
         try:
             bot = TelegramAPI(update_id)
             bot.get_info()
-
-
-            print(bot.client_id)
-            print(bot.message)
+            if database.check_connection():
+                pass
+            else:
+                bot.send_message("Sorry, I can't answer you at the moment. Try again later.")
             update_id += 1
-            print(update_id)
         except IndexError:
-            print('Никто не обращался к боту!')
-
-
-
-
-
-        # time.sleep(0.5)
-        #     res = get_update(id)
-        #     if get_status(res.status_code):
-        #         get_update_json = res.json()
-        #         client_id = get_client_id(get_update_json)
-        #         print(client_id)
-        #         if client_id:
-        #             text = get_client_text(get_update_json)
-        #             name = get_name_client(get_update_json)
-        #             send_text(client_id, text_validation(name, text))
-        #             id += 1
-
-
+            print('No one texted to bot!')
 
 
 # print(emoji.emojize(':Russia:'))

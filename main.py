@@ -77,3 +77,17 @@ if __name__ == '__main__':
 
 
     print(emoji.emojize(':Russia:'))
+
+
+
+
+
+
+
+# db = DataBase()
+# db.connection()
+# db.call_database('insert', 6666666, 'Hell')
+# db.call_database('last_note', 1172947980)
+# print(db.result[0][0].lower())
+# db.call_database('history', 1172947980)
+# print(' '.join(list(set([i[0].lower() for i in db.result]))))

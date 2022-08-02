@@ -48,7 +48,9 @@ if __name__ == '__main__':
             bot.get_info()
             if database.check_connection():
                 if language_test(bot.message):
-                    pass
+                    match bot.message:
+                        case '/start':
+                            bot.send_message(answers['start'])
                 else:
                     bot.send_message(answers['language_test'])
             else:
@@ -81,19 +83,6 @@ if __name__ == '__main__':
 #     except:
 #         self.send_info(answers['error_db'])
 
-
-
-# def accessing_database(self, command):
-#     """Accessing the database to write/read data."""
-#     data_base = DataBase(configuration['host'], configuration['user'],
-#                          configuration['password'], configuration['database'])
-#     data_base.connect()
-#     if command == 'insert_client_id_and_url':
-#         data_base.insert_data(self.client_id, self.client_message())
-#     elif command == 'select_last_note':
-#         return data_base.reading_last_note(self.client_id)
-#     elif command == 'select_history_client_id':
-#         return data_base.reading_history(self.client_id)
 
 # db = DataBase()
 # db.connection()

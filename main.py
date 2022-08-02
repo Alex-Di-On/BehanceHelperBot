@@ -50,11 +50,12 @@ if __name__ == '__main__':
                 if language_test(bot.message):
                     match bot.message:
                         case '/start' | 'CHANGE URL':
-                            bot.send_message(answers['start'])
+                            bot.send_message(answers['start'], 'del_buttons')
                         case _:
                             author = ParserBehance(bot.message)
                             if author.url_validation():
                                 database.call_database('insert', bot.client_id, bot.message)
+                                bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
                             else:
                                 bot.send_message(answers['no_portfolio'])
                 else:

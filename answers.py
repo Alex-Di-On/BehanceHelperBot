@@ -3,7 +3,7 @@
 answers = {
     'nobody_texted': "No one texted to bot!",
     'start': "Please, input author's URL on Behance:",
-    'menu': 'Please, select the menu item:',
+    'menu': 'Please, select menu item:',
     'no_portfolio': "Author hasn't portfolio on Behance.",
     'language_test': "I don't understand you. Use English, please.",
     'no_country': "didn't indicate the country on the form.",

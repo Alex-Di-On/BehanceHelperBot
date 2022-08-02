@@ -51,6 +51,9 @@ if __name__ == '__main__':
                     match bot.message:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'], 'del_buttons')
+                        case 'REQUEST HISTORY':
+                            database.call_database('history', bot.client_id)
+                            bot.send_message(' '.join(list(set([i[0].lower() for i in database.result]))))
                         case _:
                             author = ParserBehance(bot.message)
                             if author.url_validation():
@@ -68,28 +71,10 @@ if __name__ == '__main__':
 
 # print(emoji.emojize(':Russia:'))
 
-
-#         elif self.client_message() == 'REQUEST HISTORY':
-#             self.get_request_history()
 #         elif self.client_message() in self.COMMAND_BOX:
 #             user_name = self.accessing_database('select_last_note')
 #             info = ParserBehance(user_name, self.client_message())
 #             self.send_info(info.get_info())
-#         else:
-#             self.send_menu()
 
-# def get_request_history(self) -> None:
-#     """Sending the result of the database request to Client."""
-#     try:
-#         self.send_info(f"REQUEST HISTORY: {self.accessing_database('select_history_client_id')}")
-#     except:
-#         self.send_info(answers['error_db'])
-
-
-# db = DataBase()
-# db.connection()
-# db.call_database('insert', 6666666, 'Hell')
 # db.call_database('last_note', 1172947980)
 # print(db.result[0][0].lower())
-# db.call_database('history', 1172947980)
-# print(' '.join(list(set([i[0].lower() for i in db.result]))))

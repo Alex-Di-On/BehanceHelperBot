@@ -54,6 +54,10 @@ if __name__ == '__main__':
                         case 'REQUEST HISTORY':
                             database.call_database('history', bot.client_id)
                             bot.send_message(' '.join(list(set([i[0].lower() for i in database.result]))))
+                        case 'Project Views' | 'Appreciations' | 'Followers' | 'Following':
+                            pass
+                        case 'Country':
+                            pass
                         case _:
                             author = ParserBehance(bot.message)
                             if author.url_validation():

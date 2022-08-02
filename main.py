@@ -25,6 +25,14 @@ def get_update(value: int = 0) -> requests.models.Response:
     return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
 
 
+def language_test(word: str) -> bool:
+    """Checking that message is written in English."""
+    for i in list(word):
+        if not ord(i) in range(32, 128):
+            return False
+    return True
+
+
 if __name__ == '__main__':
     try:
         database = DataBase()
@@ -39,7 +47,10 @@ if __name__ == '__main__':
             bot = TelegramAPI(update_id)
             bot.get_info()
             if database.check_connection():
-                pass
+                if language_test(bot.message):
+                    pass
+                else:
+                    bot.send_message(answers['language_test'])
             else:
                 bot.send_message(answers['error_db'])
             update_id += 1
@@ -70,13 +81,7 @@ if __name__ == '__main__':
 #     except:
 #         self.send_info(answers['error_db'])
 
-# def language_test(self, word: str) -> bool:
-#     """Return True if message is written in English or False."""
-#     for i in list(word):
-#         if not ord(i) in range(32, 128):
-#             self.send_info(answers['language_test'])
-#             return False
-#     return True
+
 
 # def accessing_database(self, command):
 #     """Accessing the database to write/read data."""

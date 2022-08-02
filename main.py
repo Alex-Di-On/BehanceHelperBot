@@ -51,6 +51,12 @@ if __name__ == '__main__':
                     match bot.message:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'])
+                        case _:
+                            author = ParserBehance(bot.message)
+                            if author.url_validation():
+                                pass
+                            else:
+                                bot.send_message(answers['no_portfolio'])
                 else:
                     bot.send_message(answers['language_test'])
             else:
@@ -61,11 +67,7 @@ if __name__ == '__main__':
 
 # print(emoji.emojize(':Russia:'))
 
-# def text_validation(self) -> None:
-#     """Calling the method depending on the message received from the client."""
-#     if self.language_test(self.client_message()):
-#         if self.client_message() in ['/start', 'CHANGE URL']:
-#             self.send_start()
+
 #         elif self.client_message() == 'REQUEST HISTORY':
 #             self.get_request_history()
 #         elif self.client_message() in self.COMMAND_BOX:

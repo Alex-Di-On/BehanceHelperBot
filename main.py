@@ -49,7 +49,7 @@ if __name__ == '__main__':
             if database.check_connection():
                 if language_test(bot.message):
                     match bot.message:
-                        case '/start':
+                        case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'])
                 else:
                     bot.send_message(answers['language_test'])
@@ -58,7 +58,6 @@ if __name__ == '__main__':
             update_id += 1
         except IndexError:
             print(answers['nobody_texted'])
-
 
 # print(emoji.emojize(':Russia:'))
 

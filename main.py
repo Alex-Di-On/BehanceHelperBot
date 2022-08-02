@@ -48,6 +48,7 @@ if __name__ == '__main__':
             bot.get_info()
             if database.check_connection():
                 if language_test(bot.message):
+                    author = ParserBehance(bot.message)
                     match bot.message:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'], 'del_buttons')
@@ -59,7 +60,6 @@ if __name__ == '__main__':
                         case 'Country':
                             pass
                         case _:
-                            author = ParserBehance(bot.message)
                             if author.url_validation():
                                 database.call_database('insert', bot.client_id, bot.message)
                                 bot.send_message(answers['menu'], 'set_buttons', buttons_menu)

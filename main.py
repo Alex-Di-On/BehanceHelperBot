@@ -54,7 +54,7 @@ if __name__ == '__main__':
                         case _:
                             author = ParserBehance(bot.message)
                             if author.url_validation():
-                                pass
+                                database.call_database('insert', bot.client_id, bot.message)
                             else:
                                 bot.send_message(answers['no_portfolio'])
                 else:

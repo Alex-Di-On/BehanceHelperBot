@@ -28,7 +28,7 @@ def get_update(value: int = 0) -> requests.models.Response:
 def language_test(word: str) -> bool:
     """Checking that message is written in English."""
     for i in list(word):
-        if not ord(i) in range(32, 128):
+        if ord(i) not in range(32, 128):
             return False
     return True
 

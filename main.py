@@ -56,7 +56,11 @@ if __name__ == '__main__':
                         bot.send_message(answers['start'], 'del_buttons')
                     case 'REQUEST HISTORY':
                         database.call_database('history', bot.client_id)
-                        bot.send_message(' '.join(list(set([i[0].lower() for i in database.result]))))
+                        history_result = ' '.join(list(set([i[0].lower() for i in database.result])))
+                        if len(history_result) == 0:
+                            bot.send_message('Ваша история запросов пустая.')
+                        else:
+                            bot.send_message(history_result)
                     case _:
                         match bot.message:
                             case "Author's project Views" | "Author's appreciations" |\

@@ -34,7 +34,3 @@ class ParserBehance:
         array = [views.find_all('td')[i].text for i in range(len(views.find_all('td')))]
         dict_statistics = {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}
         return dict_statistics[command]
-
-
-# a = ParserBehance('bolimond')
-# print(a.get_country())

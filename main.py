@@ -46,35 +46,37 @@ if __name__ == '__main__':
         try:
             bot = TelegramAPI(update_id)
             bot.get_info()
-            if database.check_connection():
-                if language_test(bot.message):
-                    match bot.message:
-                        case '/start' | 'CHANGE URL':
-                            bot.send_message(answers['start'], 'del_buttons')
-                        case 'REQUEST HISTORY':
-                            database.call_database('history', bot.client_id)
-                            bot.send_message(' '.join(list(set([i[0].lower() for i in database.result]))))
-                        case _:
-                            match bot.message:
-                                case "Author's project Views" | "Author's appreciations" |\
-                                     "Author's followers" | "Author's following":
-                                    pass
-                                case "Author's country":
-                                    pass
-                                case _:
-                                    author = ParserBehance(bot.message)
-                                    if author.url_validation():
-                                        database.call_database('insert', bot.client_id, bot.message)
-                                        bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
-                                    else:
-                                        bot.send_message(answers['no_portfolio'])
-                else:
-                    bot.send_message(answers['language_test'])
-            else:
-                bot.send_message(answers['error_db'])
-            update_id += 1
         except IndexError:
             print(answers['nobody_texted'])
+            continue
+        if database.check_connection():
+            if language_test(bot.message):
+                match bot.message:
+                    case '/start' | 'CHANGE URL':
+                        bot.send_message(answers['start'], 'del_buttons')
+                    case 'REQUEST HISTORY':
+                        database.call_database('history', bot.client_id)
+                        bot.send_message(' '.join(list(set([i[0].lower() for i in database.result]))))
+                    case _:
+                        match bot.message:
+                            case "Author's project Views" | "Author's appreciations" |\
+                                 "Author's followers" | "Author's following":
+                                pass
+                            case "Author's country":
+                                pass
+                            case _:
+                                author = ParserBehance(bot.message)
+                                if author.url_validation():
+                                    database.call_database('insert', bot.client_id, bot.message)
+                                    bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                                else:
+                                    bot.send_message(answers['no_portfolio'])
+            else:
+                bot.send_message(answers['language_test'])
+        else:
+            bot.send_message(answers['error_db'])
+        update_id += 1
+
 
 
 # Черновик:

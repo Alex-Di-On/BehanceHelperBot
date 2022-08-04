@@ -2,7 +2,7 @@ import requests
 import sys
 from mysql.connector import Error
 import time
-import emoji
+from emoji import emojize
 
 from database import DataBase
 from parser import ParserBehance
@@ -48,23 +48,26 @@ if __name__ == '__main__':
             bot.get_info()
             if database.check_connection():
                 if language_test(bot.message):
-                    author = ParserBehance(bot.message)
                     match bot.message:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'], 'del_buttons')
                         case 'REQUEST HISTORY':
                             database.call_database('history', bot.client_id)
                             bot.send_message(' '.join(list(set([i[0].lower() for i in database.result]))))
-                        case 'Project Views' | 'Appreciations' | 'Followers' | 'Following':
-                            pass
-                        case 'Country':
-                            pass
                         case _:
-                            if author.url_validation():
-                                database.call_database('insert', bot.client_id, bot.message)
-                                bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
-                            else:
-                                bot.send_message(answers['no_portfolio'])
+                            match bot.message:
+                                case "Author's project Views" | "Author's appreciations" |\
+                                     "Author's followers" | "Author's following":
+                                    pass
+                                case "Author's country":
+                                    pass
+                                case _:
+                                    author = ParserBehance(bot.message)
+                                    if author.url_validation():
+                                        database.call_database('insert', bot.client_id, bot.message)
+                                        bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                                    else:
+                                        bot.send_message(answers['no_portfolio'])
                 else:
                     bot.send_message(answers['language_test'])
             else:
@@ -73,12 +76,8 @@ if __name__ == '__main__':
         except IndexError:
             print(answers['nobody_texted'])
 
+
+# Черновик:
 # print(emoji.emojize(':Russia:'))
-
-#         elif self.client_message() in self.COMMAND_BOX:
-#             user_name = self.accessing_database('select_last_note')
-#             info = ParserBehance(user_name, self.client_message())
-#             self.send_info(info.get_info())
-
 # db.call_database('last_note', 1172947980)
 # print(db.result[0][0].lower())

@@ -57,7 +57,7 @@ if __name__ == '__main__':
                     case 'REQUEST HISTORY':
                         database.call_database('history', bot.client_id)
                         history_result = ' '.join(list(set([i[0].lower() for i in database.result])))
-                        if len(history_result) == 0:
+                        if not history_result:
                             bot.send_message('Ваша история запросов пустая.')
                         else:
                             bot.send_message(history_result)

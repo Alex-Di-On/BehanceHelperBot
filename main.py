@@ -58,10 +58,15 @@ if __name__ == '__main__':
                         database.call_database('history', bot.client_id)
                         history_result = ' '.join(list(set([i[0].lower() for i in database.result])))
                         if not history_result:
-                            bot.send_message('Ваша история запросов пустая.')
+                            bot.send_message(answers['empty_history'])
                         else:
                             bot.send_message(history_result)
                     case _:
+                        try:
+                            database.call_database('last_note', bot.client_id)
+                            last_url = database.result[0][0].lower()
+                        except IndexError:
+                            pass
                         match bot.message:
                             case "Author's project Views" | "Author's appreciations" |\
                                  "Author's followers" | "Author's following":

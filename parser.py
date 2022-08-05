@@ -23,7 +23,7 @@ class ParserBehance:
         """Return class BeautifulSoup."""
         return BeautifulSoup(self.get_request().text, 'html.parser')
 
-    def get_country(self) -> None:
+    def get_country(self) -> str:
         """Setting country of author from html-page."""
         return self.get_html_page().find('span', class_='e2e-Profile-location').text
 

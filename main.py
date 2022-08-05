@@ -33,6 +33,13 @@ def language_test(word: str) -> bool:
     return True
 
 
+def country_filter(region: str) -> str:
+    """Changing country for emoji searching."""
+    if region.split()[-1] == 'Federation':
+        return 'Russia'
+    return region
+
+
 if __name__ == '__main__':
     try:
         database = DataBase()
@@ -66,8 +73,10 @@ if __name__ == '__main__':
                         try:
                             database.call_database('last_note', bot.client_id)
                             url = ParserBehance(database.result[0][0].lower())
-                            if bot.message.split(' ')[-1] == 'country':
-                                bot.send_message('ку-ку')
+                            if bot.message == "Author's country":
+                                country = country_filter(url.get_country())
+                                flag = f"{emojize(f':{country}:')}"
+                                bot.send_message(f'Country of {url.user_name} is {country} {flag}')
                             else:
                                 bot.send_message(url.get_statistics()[bot.message[9:].title()])
                         except IndexError:

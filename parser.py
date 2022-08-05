@@ -6,6 +6,7 @@ class ParserBehance:
     """Parser of author's web-page on Behance."""
 
     URL = 'https://www.behance.net/'
+    dict_statistics = None
     country = None
 
     def __init__(self, user_name: str):
@@ -28,9 +29,8 @@ class ParserBehance:
         """Setting country of author from html-page."""
         self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
 
-    def get_statistics(self, command: str) -> str:
+    def get_statistics(self) -> None:
         """Return statistics of author by command from html-page."""
         views = self.get_html_page().find('table', class_='UserInfo-userStats-PFk')
         array = [views.find_all('td')[i].text for i in range(len(views.find_all('td')))]
-        dict_statistics = {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}
-        return dict_statistics[command]
+        self.dict_statistics = {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}

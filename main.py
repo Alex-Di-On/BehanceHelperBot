@@ -64,7 +64,9 @@ if __name__ == '__main__':
                     case _:
                         try:
                             database.call_database('last_note', bot.client_id)
-                            last_url = database.result[0][0].lower()
+                            last_url = ParserBehance(database.result[0][0].lower())
+                            last_url.get_statistics()
+                            last_url.get_country()
                         except IndexError:
                             pass
                         match bot.message:
@@ -72,7 +74,7 @@ if __name__ == '__main__':
                                  "Author's followers" | "Author's following":
                                 pass
                             case "Author's country":
-                                pass
+                                bot.send_message(last_url.country)
                             case _:
                                 author = ParserBehance(bot.message)
                                 if author.url_validation():
@@ -86,9 +88,4 @@ if __name__ == '__main__':
             bot.send_message(answers['error_db'])
         update_id += 1
 
-
-
-# Черновик:
 # print(emoji.emojize(':Russia:'))
-# db.call_database('last_note', 1172947980)
-# print(db.result[0][0].lower())

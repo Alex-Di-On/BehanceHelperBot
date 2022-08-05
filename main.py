@@ -70,23 +70,24 @@ if __name__ == '__main__':
                         except IndexError:
                             url_dict_stat = None
                             url_country = answers['no_country']
-                        if bot.message == "Author's project views":
-                            pass
-                        elif bot.message == "Author's appreciations":
-                            pass
-                        elif bot.message == "Author's followers":
-                            pass
-                        elif bot.message == "Author's following":
-                            pass
-                        elif bot.message == "Author's country":
-                            bot.send_message(url_country + emojize(f':{url_country}:'))
-                        else:
-                            author = ParserBehance(bot.message)
-                            if author.url_validation():
-                                database.call_database('insert', bot.client_id, bot.message)
-                                bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
-                            else:
-                                bot.send_message(answers['no_portfolio'])
+                        match bot.message:
+                            case "Author's project views":
+                                bot.send_message(url_dict_stat['Project Views'])
+                            case "Author's appreciations":
+                                bot.send_message(url_dict_stat['Appreciations'])
+                            case "Author's followers":
+                                bot.send_message(url_dict_stat['Followers'])
+                            case "Author's following":
+                                bot.send_message(url_dict_stat['Following'])
+                            case "Author's country":
+                                bot.send_message(url_country + emojize(f':{url_country}:'))
+                            case _:
+                                author = ParserBehance(bot.message)
+                                if author.url_validation():
+                                    database.call_database('insert', bot.client_id, bot.message)
+                                    bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                                else:
+                                    bot.send_message(answers['no_portfolio'])
             else:
                 bot.send_message(answers['language_test'])
         else:

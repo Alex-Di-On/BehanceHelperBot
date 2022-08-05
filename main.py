@@ -61,33 +61,22 @@ if __name__ == '__main__':
                             bot.send_message(answers['empty_history'])
                         else:
                             bot.send_message(history_result)
-                    case _:
+                    case "Author's project views" | "Author's appreciations" |\
+                         "Author's followers" | "Author's following" | "Author's country":
                         try:
                             database.call_database('last_note', bot.client_id)
-                            last_note = ParserBehance(database.result[0][0].lower())
-                            url_dict_stat = last_note.get_statistics()
-                            url_country = last_note.get_country()
+                            url = ParserBehance(database.result[0][0].lower())
+                            data = 'information'
+                            bot.send_message(data)
                         except IndexError:
-                            url_dict_stat = None
-                            url_country = answers['no_country']
-                        match bot.message:
-                            case "Author's project views":
-                                bot.send_message(url_dict_stat['Project Views'])
-                            case "Author's appreciations":
-                                bot.send_message(url_dict_stat['Appreciations'])
-                            case "Author's followers":
-                                bot.send_message(url_dict_stat['Followers'])
-                            case "Author's following":
-                                bot.send_message(url_dict_stat['Following'])
-                            case "Author's country":
-                                bot.send_message(url_country + emojize(f':{url_country}:'))
-                            case _:
-                                author = ParserBehance(bot.message)
-                                if author.url_validation():
-                                    database.call_database('insert', bot.client_id, bot.message)
-                                    bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
-                                else:
-                                    bot.send_message(answers['no_portfolio'])
+                            bot.send_message(answers['no_history'])
+                    case _:
+                        author = ParserBehance(bot.message)
+                        if author.url_validation():
+                            database.call_database('insert', bot.client_id, bot.message)
+                            bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                        else:
+                            bot.send_message(answers['no_portfolio'])
             else:
                 bot.send_message(answers['language_test'])
         else:

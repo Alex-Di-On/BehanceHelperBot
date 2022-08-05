@@ -6,7 +6,6 @@ class ParserBehance:
     """Parser of author's web-page on Behance."""
 
     URL = 'https://www.behance.net/'
-    dict_statistics = None
 
     def __init__(self, user_name: str):
         """Initialisation of Class Object."""
@@ -24,7 +23,7 @@ class ParserBehance:
         """Return class BeautifulSoup."""
         return BeautifulSoup(self.get_request().text, 'html.parser')
 
-    def get_country(self) -> str:
+    def get_country(self) -> None:
         """Setting country of author from html-page."""
         return self.get_html_page().find('span', class_='e2e-Profile-location').text
 

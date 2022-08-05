@@ -70,7 +70,7 @@ if __name__ == '__main__':
                         except IndexError:
                             url_dict_stat = None
                             url_country = answers['no_country']
-                        if bot.message == "Author's project Views":
+                        if bot.message == "Author's project views":
                             pass
                         elif bot.message == "Author's appreciations":
                             pass
@@ -79,7 +79,7 @@ if __name__ == '__main__':
                         elif bot.message == "Author's following":
                             pass
                         elif bot.message == "Author's country":
-                            pass
+                            bot.send_message(url_country + emojize(f':{url_country}:'))
                         else:
                             author = ParserBehance(bot.message)
                             if author.url_validation():
@@ -92,5 +92,3 @@ if __name__ == '__main__':
         else:
             bot.send_message(answers['error_db'])
         update_id += 1
-
-# print(emoji.emojize(':Russia:'))

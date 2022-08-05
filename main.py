@@ -64,24 +64,29 @@ if __name__ == '__main__':
                     case _:
                         try:
                             database.call_database('last_note', bot.client_id)
-                            last_url = ParserBehance(database.result[0][0].lower())
-                            last_url.get_statistics()
-                            last_url.get_country()
+                            last_note = ParserBehance(database.result[0][0].lower())
+                            url_dict_stat = last_note.get_statistics()
+                            url_country = last_note.get_country()
                         except IndexError:
+                            url_dict_stat = None
+                            url_country = answers['no_country']
+                        if bot.message == "Author's project Views":
                             pass
-                        match bot.message:
-                            case "Author's project Views" | "Author's appreciations" |\
-                                 "Author's followers" | "Author's following":
-                                pass
-                            case "Author's country":
-                                bot.send_message(last_url.country)
-                            case _:
-                                author = ParserBehance(bot.message)
-                                if author.url_validation():
-                                    database.call_database('insert', bot.client_id, bot.message)
-                                    bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
-                                else:
-                                    bot.send_message(answers['no_portfolio'])
+                        elif bot.message == "Author's appreciations":
+                            pass
+                        elif bot.message == "Author's followers":
+                            pass
+                        elif bot.message == "Author's following":
+                            pass
+                        elif bot.message == "Author's country":
+                            pass
+                        else:
+                            author = ParserBehance(bot.message)
+                            if author.url_validation():
+                                database.call_database('insert', bot.client_id, bot.message)
+                                bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                            else:
+                                bot.send_message(answers['no_portfolio'])
             else:
                 bot.send_message(answers['language_test'])
         else:

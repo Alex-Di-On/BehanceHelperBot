@@ -7,7 +7,6 @@ class ParserBehance:
 
     URL = 'https://www.behance.net/'
     dict_statistics = None
-    country = None
 
     def __init__(self, user_name: str):
         """Initialisation of Class Object."""
@@ -25,12 +24,12 @@ class ParserBehance:
         """Return class BeautifulSoup."""
         return BeautifulSoup(self.get_request().text, 'html.parser')
 
-    def get_country(self) -> None:
+    def get_country(self) -> str:
         """Setting country of author from html-page."""
-        self.country = self.get_html_page().find('span', class_='e2e-Profile-location').text
+        return self.get_html_page().find('span', class_='e2e-Profile-location').text
 
-    def get_statistics(self) -> None:
+    def get_statistics(self) -> dict:
         """Return statistics of author by command from html-page."""
         views = self.get_html_page().find('table', class_='UserInfo-userStats-PFk')
         array = [views.find_all('td')[i].text for i in range(len(views.find_all('td')))]
-        self.dict_statistics = {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}
+        return {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}

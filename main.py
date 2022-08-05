@@ -78,7 +78,8 @@ if __name__ == '__main__':
                                 flag = f"{emojize(f':{country}:')}"
                                 bot.send_message(f'Country of {url.user_name} is {country} {flag}')
                             else:
-                                bot.send_message(url.get_statistics()[bot.message[9:].title()])
+                                key = bot.message[9:].title()
+                                bot.send_message(f'{key.title()} of {url.user_name} is {url.get_statistics()[key]}')
                         except IndexError:
                             bot.send_message(answers['no_history'])
                     case _:

@@ -67,7 +67,7 @@ if __name__ == '__main__':
                         if not history_result:
                             bot.send_message(answers['empty_history'])
                         else:
-                            bot.send_message(history_result)
+                            bot.send_message(f"{answers['request_history']}: {history_result}.")
                     case "Author's project views" | "Author's appreciations" |\
                          "Author's followers" | "Author's following" | "Author's country":
                         try:

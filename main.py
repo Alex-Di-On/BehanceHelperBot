@@ -66,8 +66,10 @@ if __name__ == '__main__':
                         try:
                             database.call_database('last_note', bot.client_id)
                             url = ParserBehance(database.result[0][0].lower())
-                            data = 'information'
-                            bot.send_message(data)
+                            if bot.message.split(' ')[-1] == 'country':
+                                bot.send_message('ку-ку')
+                            else:
+                                bot.send_message(url.get_statistics()[bot.message[9:].title()])
                         except IndexError:
                             bot.send_message(answers['no_history'])
                     case _:

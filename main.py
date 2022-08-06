@@ -103,4 +103,5 @@ if __name__ == '__main__':
                 bot.send_message(answers['language_test'])
         else:
             bot.send_message(answers['error_db'])
+            # Отправка уведомления на почту, что База Данных не работает в настоящее время.
         update_id += 1

@@ -63,11 +63,11 @@ if __name__ == '__main__':
                         bot.send_message(answers['start'], 'del_buttons')
                     case 'REQUEST HISTORY':
                         database.call_database('history', bot.client_id)
-                        history_result = ' '.join(list(set([i[0].lower() for i in database.result])))
+                        history_result = ', '.join(list(set([i[0].lower() for i in database.result])))
                         if not history_result:
                             bot.send_message(answers['empty_history'])
                         else:
-                            bot.send_message(f"{answers['request_history']}: {history_result}.")
+                            bot.send_message(f"{answers['request_history']} {history_result}.")
                     case "Author's project views" | "Author's appreciations" |\
                          "Author's followers" | "Author's following" | "Author's country":
                         try:
@@ -79,7 +79,11 @@ if __name__ == '__main__':
                                 bot.send_message(f'Country of {url.user_name} is {country} {flag}')
                             else:
                                 key = bot.message[9:].title()
-                                bot.send_message(f'{key.title()} of {url.user_name} is {url.get_statistics()[key]}')
+                                try:
+                                    value = url.get_statistics()[key]
+                                except KeyError:
+                                    value = url.statistics[key]
+                                bot.send_message(f'{key.title()} of {url.user_name} is {value}.')
                         except IndexError:
                             bot.send_message(answers['no_history'])
                     case _:

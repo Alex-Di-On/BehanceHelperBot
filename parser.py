@@ -6,6 +6,7 @@ class ParserBehance:
     """Parser of author's web-page on Behance."""
 
     URL = 'https://www.behance.net/'
+    statistics = {'Project Views': 0, 'Appreciations': 0, 'Followers': 0, 'Following': 0}
 
     def __init__(self, user_name: str):
         """Initialisation of Class Object."""

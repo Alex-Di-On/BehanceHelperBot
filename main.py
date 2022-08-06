@@ -48,7 +48,10 @@ if __name__ == '__main__':
         database.connection()
     except Error:
         sys.exit(answers['quit'])
-    update_id = get_update_id(get_update().json())
+    res = get_update()
+    if res.status_code != 200:
+        sys.exit(answers['telegram_error'])
+    update_id = get_update_id(res.json())
     print(f'Start update_id: {update_id}')
     while True:
         time.sleep(0.5)

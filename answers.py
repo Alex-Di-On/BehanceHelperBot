@@ -11,5 +11,6 @@ answers = {
     'quit': 'No connection to database. Bot is not activated.',
     'empty_history': 'Your request history is empty.',
     'no_history': "Sorry, I don't see your request history. Please, input author's URL on Behance again.",
-    'request_history': 'YOUR REQUEST HISTORY:'
+    'request_history': 'YOUR REQUEST HISTORY:',
+    'telegram_error': 'Failed to connect to Telegram server.'
 }

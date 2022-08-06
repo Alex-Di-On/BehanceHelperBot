@@ -37,6 +37,8 @@ def country_filter(region: str) -> str:
     """Changing country for emoji searching."""
     if region.split()[-1] == 'Federation':
         return 'Russia'
+    elif region.split()[-1] == 'China':
+        return 'China'
     return region
 
 

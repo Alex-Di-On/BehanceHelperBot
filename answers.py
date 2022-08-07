@@ -1,4 +1,4 @@
-# Dict with Bot answers:
+# Bot answers:
 
 answers = {
     'nobody_texted': "No one texted to bot!",
@@ -19,3 +19,13 @@ answers = {
     'error_auth': 'Warning! BehanceHelperBot has SMTPAuthenticationError.',
     'error_connect': 'Warning! BehanceHelperBot has SMTPConnectError.'
 }
+
+buttons_menu = [
+    ["Author's project views"],
+    ["Author's appreciations"],
+    ["Author's followers"],
+    ["Author's following"],
+    ["Author's country"],
+    ['REQUEST HISTORY'],
+    ['CHANGE URL']
+]

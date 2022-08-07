@@ -10,8 +10,7 @@ from emoji import emojize
 from database import DataBase
 from parser import ParserBehance
 from telegram import TelegramAPI
-from templates import buttons_menu
-from answers import answers
+from answers import answers, buttons_menu
 from config import configuration
 
 

@@ -21,10 +21,10 @@ def get_update_id(data: dict) -> int:
     return data['result'][0]['update_id']
 
 
-def get_update(value: int = 0) -> requests.models.Response:
+def get_update(parameter: int = 0) -> requests.models.Response:
     """Return POST-request."""
     method = '/getUpdates'
-    data = {'offset': value, 'limit': 1, 'timeout': 0}
+    data = {'offset': parameter, 'limit': 1, 'timeout': 0}
     return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
 
 

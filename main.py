@@ -125,7 +125,7 @@ if __name__ == '__main__':
                 smtp_object.sendmail(message['From'], message['To'], message.as_string())
                 smtp_object.quit()
             except SMTPAuthenticationError:
-                pass
+                admin_message({'chat_id': configuration['admin_id'], 'text': answers['error_auth']})
             except SMTPConnectError:
-                pass
+                admin_message({'chat_id': configuration['admin_id'], 'text': answers['error_connect']})
         update_id += 1

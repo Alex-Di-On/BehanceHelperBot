@@ -16,5 +16,7 @@ answers = {
     'mail_error': 'Failed of authentication by SMTP.',
     'mail_error_subject': 'Warning! DataBase connection error!',
     'warning_mail': 'Warning! There is a problem with DataBase connection for BehanceHelperBot.'
-                    'Check functionality of DataBase on REG.RU, please.'
+                    'Check functionality of DataBase on REG.RU, please.',
+    'error_auth': 'Warning! BehanceHelperBot has SMTPAuthenticationError.',
+    'error_connect': 'Warning! BehanceHelperBot has SMTPConnectError.'
 }

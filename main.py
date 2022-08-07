@@ -46,7 +46,7 @@ def country_filter(region: str) -> str:
 
 if __name__ == '__main__':
     try:
-        smtp_object = SMTP(configuration['system_domen'], port=587)
+        smtp_object = SMTP(configuration['system_domen'], port=configuration['port'])
         smtp_object.starttls()
         smtp_object.login(user=configuration['system_mail'], password=configuration['system_mail_password'])
     except SMTPAuthenticationError:

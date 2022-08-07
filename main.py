@@ -1,7 +1,7 @@
 import requests
 import sys
 from mysql.connector import Error
-from smtplib import SMTP, SMTPAuthenticationError
+from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
 import time
 from emoji import emojize
 
@@ -45,12 +45,6 @@ def country_filter(region: str) -> str:
 
 
 if __name__ == '__main__':
-    try:
-        smtp_object = SMTP(configuration['system_domen'], port=configuration['port'])
-        smtp_object.starttls()
-        smtp_object.login(user=configuration['system_mail'], password=configuration['system_mail_password'])
-    except SMTPAuthenticationError:
-        sys.exit(answers['mail_error'])
     try:
         database = DataBase()
         database.connection()
@@ -111,5 +105,12 @@ if __name__ == '__main__':
                 bot.send_message(answers['language_test'])
         else:
             bot.send_message(answers['error_db'])
-            # Отправка уведомления на почту, что База Данных не работает в настоящее время.
+            try:
+                smtp_object = SMTP(configuration['system_domen'], port=configuration['port'])
+                smtp_object.starttls()
+                smtp_object.login(user=configuration['system_mail'], password=configuration['system_mail_password'])
+            except SMTPAuthenticationError:
+                pass
+            except SMTPConnectError:
+                pass
         update_id += 1

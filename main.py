@@ -56,7 +56,7 @@ if __name__ == '__main__':
         database = DataBase()
         database.connection()
     except Error:
-        sys.exit(answers['quit'])
+        sys.exit(answers['database_error'])
     res = get_update()
     if res.status_code != 200:
         sys.exit(answers['telegram_error'])

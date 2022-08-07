@@ -29,6 +29,12 @@ def get_update(value: int = 0) -> requests.models.Response:
     return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
 
 
+def admin_message(data: dict) -> requests.models.Response:
+    """Sending message to Admin."""
+    method = '/sendMessage'
+    return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
+
+
 def language_test(word: str) -> bool:
     """Checking that message is written in English."""
     for i in list(word):

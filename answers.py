@@ -12,5 +12,6 @@ answers = {
     'empty_history': 'Your request history is empty.',
     'no_history': "Sorry, I don't see your request history. Please, input author's URL on Behance again.",
     'request_history': 'YOUR REQUEST HISTORY:',
-    'telegram_error': 'Failed to connect to Telegram server.'
+    'telegram_error': 'Failed to connect to Telegram server.',
+    'mail_error': 'Failed of authentication by SMTP.'
 }

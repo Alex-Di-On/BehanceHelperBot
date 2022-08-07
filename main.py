@@ -1,6 +1,7 @@
 import requests
 import sys
 from mysql.connector import Error
+from smtplib import SMTP, SMTPAuthenticationError
 import time
 from emoji import emojize
 
@@ -9,6 +10,7 @@ from parser import ParserBehance
 from telegram import TelegramAPI
 from templates import buttons_menu
 from answers import answers
+from config import configuration
 
 
 def get_update_id(data: dict) -> int:
@@ -43,6 +45,12 @@ def country_filter(region: str) -> str:
 
 
 if __name__ == '__main__':
+    try:
+        smtp_object = SMTP(configuration['system_domen'], port=587)
+        smtp_object.starttls()
+        smtp_object.login(user=configuration['system_mail'], password=configuration['system_mail_password'])
+    except SMTPAuthenticationError:
+        sys.exit(answers['mail_error'])
     try:
         database = DataBase()
         database.connection()

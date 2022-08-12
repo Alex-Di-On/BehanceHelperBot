@@ -52,9 +52,9 @@ def country_filter(region: str) -> str:
 
 if __name__ == '__main__':
     database = DataBase()
+    telegram = TelegramAPI()
+    telegram.test_connection()
     res = get_update()
-    if res.status_code != 200:
-        sys.exit(answers['telegram_error'])
     update_id = get_update_id(res.json())
     print(f'Start update_id: {update_id}')
     while True:

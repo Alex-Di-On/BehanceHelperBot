@@ -1,3 +1,4 @@
+import sys
 import requests
 import json
 from config import configuration
@@ -11,9 +12,17 @@ class TelegramAPI:
     client_id = None
     message = None
 
-    def __init__(self, identification: int):
+    def __init__(self, identification: int = 0):
         """Initialisation of Class Object."""
         self.identification = identification
+
+    def test_connection(self) -> None:
+        """Test connection to Telegram server."""
+        method = '/getUpdates'
+        data = {'offset': 0, 'limit': 1, 'timeout': 0}
+        response = self.get_post_request(method, data)
+        if response.status_code != 200:
+            sys.exit('Telegram server is not available.')
 
     def get_post_request(self, method: str, body: dict) -> requests.models.Response:
         """Return POST-request."""

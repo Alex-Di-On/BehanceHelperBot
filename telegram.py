@@ -29,18 +29,21 @@ class TelegramAPI:
             data = {'offset': 0, 'limit': 1, 'timeout': 0}
         return self.get_post_request(method, data)
 
-    def get_status_code(self) -> int:
-        """Return status_code of request."""
-        return self.get_response().status_code
+    def check_status_code(self) -> bool:
+        """Return boolean status of connection."""
+        if self.get_response().status_code != 200:
+            return False
+        return True
 
     def get_update_id(self) -> int:
-        """Return update_id of request."""
-        if self.get_status_code() != 200:
+        """Return update_id."""
+        if self.check_status_code():
+            res_dict = self.get_response().json()
+            if not res_dict['result']:
+                return 0
+            return res_dict['result'][0]['update_id']
+        else:
             sys.exit('Telegram server is not available.')
-        res_dict = self.get_response().json()
-        if not res_dict['result']:
-            return 0
-        return res_dict['result'][0]['update_id']
 
     def get_info(self) -> None:
         """Getting info about Client."""

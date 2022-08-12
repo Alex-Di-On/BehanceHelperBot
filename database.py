@@ -25,6 +25,10 @@ class DataBase(metaclass=MetaSingleton):
     __cursor = None
     result = None
 
+    def __init__(self):
+        """Initialisation of Class Object. Start connection process by default."""
+        self.connection()
+
     def connection(self) -> None:
         """Connection to database."""
         if self.__connection is None:

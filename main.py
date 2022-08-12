@@ -54,7 +54,6 @@ def country_filter(region: str) -> str:
 if __name__ == '__main__':
     try:
         database = DataBase()
-        database.connection()
     except Error:
         sys.exit(answers['database_error'])
     res = get_update()

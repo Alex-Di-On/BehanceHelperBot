@@ -1,5 +1,4 @@
 import requests
-import sys
 from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -11,20 +10,6 @@ from parser import ParserBehance
 from telegram import TelegramAPI
 from answers import answers, buttons_menu
 from config import configuration
-
-
-def get_update_id(data: dict) -> int:
-    """Return update_id of Client's last request to Bot."""
-    if not data['result']:
-        return 0
-    return data['result'][0]['update_id']
-
-
-def get_update(parameter: int = 0) -> requests.models.Response:
-    """Return POST-request."""
-    method = '/getUpdates'
-    data = {'offset': parameter, 'limit': 1, 'timeout': 0}
-    return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
 
 
 def admin_message(data: dict) -> requests.models.Response:
@@ -53,9 +38,7 @@ def country_filter(region: str) -> str:
 if __name__ == '__main__':
     database = DataBase()
     telegram = TelegramAPI()
-    telegram.test_connection()
-    res = get_update()
-    update_id = get_update_id(res.json())
+    update_id = telegram.get_update_id()
     print(f'Start update_id: {update_id}')
     while True:
         time.sleep(0.5)

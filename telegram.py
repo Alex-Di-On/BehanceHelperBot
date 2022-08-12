@@ -1,14 +1,17 @@
 import sys
 import requests
 import json
+
+from requests import Response
+
 from config import configuration
 
 
 class TelegramAPI:
     """Class for accessing to Telegram via API."""
 
-    URL = 'https://api.telegram.org/bot'
-    TOKEN = configuration['token']
+    __URL = 'https://api.telegram.org/bot'
+    __TOKEN = configuration['token']
     client_id = None
     message = None
 
@@ -16,17 +19,28 @@ class TelegramAPI:
         """Initialisation of Class Object."""
         self.identification = identification
 
-    def test_connection(self) -> None:
-        """Test connection to Telegram server."""
-        method = '/getUpdates'
-        data = {'offset': 0, 'limit': 1, 'timeout': 0}
-        response = self.get_post_request(method, data)
-        if response.status_code != 200:
-            sys.exit('Telegram server is not available.')
-
     def get_post_request(self, method: str, body: dict) -> requests.models.Response:
         """Return POST-request."""
-        return requests.post(self.URL + self.TOKEN + method, data=body)
+        return requests.post(self.__URL + self.__TOKEN + method, data=body)
+
+    def get_response(self, method: str = '/getUpdates', data=None) -> Response:
+        """Return Response."""
+        if data is None:
+            data = {'offset': 0, 'limit': 1, 'timeout': 0}
+        return self.get_post_request(method, data)
+
+    def get_status_code(self) -> int:
+        """Return status_code of request."""
+        return self.get_response().status_code
+
+    def get_update_id(self) -> int:
+        """Return update_id of request."""
+        if self.get_status_code() != 200:
+            sys.exit('Telegram server is not available.')
+        res_dict = self.get_response().json()
+        if not res_dict['result']:
+            return 0
+        return res_dict['result'][0]['update_id']
 
     def get_info(self) -> None:
         """Getting info about Client."""

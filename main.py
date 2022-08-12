@@ -1,6 +1,5 @@
 import requests
 import sys
-from mysql.connector import Error
 from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -52,10 +51,7 @@ def country_filter(region: str) -> str:
 
 
 if __name__ == '__main__':
-    try:
-        database = DataBase()
-    except Error:
-        sys.exit(answers['database_error'])
+    database = DataBase()
     res = get_update()
     if res.status_code != 200:
         sys.exit(answers['telegram_error'])

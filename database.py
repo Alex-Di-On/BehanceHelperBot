@@ -1,4 +1,5 @@
-from mysql.connector import connect
+import sys
+from mysql.connector import connect, Error
 from config import configuration
 
 
@@ -27,7 +28,10 @@ class DataBase(metaclass=MetaSingleton):
 
     def __init__(self):
         """Initialisation of Class Object. Start connection process by default."""
-        self.connection()
+        try:
+            self.connection()
+        except Error:
+            sys.exit('No connection to DataBase.')
 
     def connection(self) -> None:
         """Connection to database."""

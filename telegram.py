@@ -41,12 +41,11 @@ class TelegramAPI:
         try:
             res_dict = self.get_response().json()
             if not res_dict['result']:
-                info_dict['update_id'] = 0
-            else:
-                info_dict['update_id'] = res_dict['result'][0]['update_id']
-                way = res_dict['result'][0]['message']
-                info_dict['client_id'] = way['from']['id']
-                info_dict['text'] = way['text']
+                return info_dict
+            info_dict['update_id'] = res_dict['result'][0]['update_id']
+            way = res_dict['result'][0]['message']
+            info_dict['client_id'] = way['from']['id']
+            info_dict['text'] = way['text']
             return info_dict
         except HTTPError:
             return info_dict

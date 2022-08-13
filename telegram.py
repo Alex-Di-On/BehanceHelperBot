@@ -1,9 +1,7 @@
 import sys
 import requests
 import json
-
 from requests import Response
-
 from config import configuration
 
 
@@ -34,14 +32,18 @@ class TelegramAPI:
         if self.get_response().status_code != 200:
             sys.exit('Telegram server is not available.')
 
-    # def get_info(self, command: str) -> dict:
-
-    def get_update_id(self) -> int:
-        """Return update_id."""
+    def get_info_dict(self) -> dict:
+        """Return info_dict."""
         res_dict = self.get_response().json()
+        info_dict = {'update_id': 0, 'client_id': 0, 'text': None}
         if not res_dict['result']:
-            return 0
-        return res_dict['result'][0]['update_id']
+            info_dict['update_id'] = 0
+        else:
+            info_dict['update_id'] = res_dict['result'][0]['update_id']
+            way = res_dict['result'][0]['message']
+            info_dict['client_id'] = way['from']['id']
+            info_dict['text'] = way['text']
+        return info_dict
 
     def get_info(self) -> None:
         """Getting info about Client."""

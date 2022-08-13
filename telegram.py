@@ -16,6 +16,8 @@ class TelegramAPI:
     def __init__(self, identification: int = 0):
         """Initialisation of Class Object."""
         self.identification = identification
+        print(self.check_status_code())
+        self.info_dict = self.get_info_dict()
 
     def get_post_request(self, method: str, body: dict) -> requests.models.Response:
         """Return POST-request."""
@@ -27,15 +29,16 @@ class TelegramAPI:
             data = {'offset': 0, 'limit': 1, 'timeout': 0}
         return self.get_post_request(method, data)
 
-    def check_status_code(self) -> None:
-        """Sys.exit() if status_code != 200."""
+    def check_status_code(self) -> str:
+        """Return warning message to console."""
         if self.get_response().status_code != 200:
-            sys.exit('Telegram server is not available.')
+            return 'Telegram server is offline. Please, wait!'
+        return 'Telegram server is online.'
 
     def get_info_dict(self) -> dict:
         """Return info_dict."""
         res_dict = self.get_response().json()
-        info_dict = {'update_id': 0, 'client_id': 0, 'text': None}
+        info_dict = {'update_id': None, 'client_id': None, 'text': None}
         if not res_dict['result']:
             info_dict['update_id'] = 0
         else:

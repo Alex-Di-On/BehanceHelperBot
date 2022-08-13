@@ -37,9 +37,7 @@ def country_filter(region: str) -> str:
 
 if __name__ == '__main__':
     test = TelegramAPI()
-    test.check_status_code()
-    info_dict = test.get_info_dict()
-    update_id = info_dict['update_id']
+    update_id = test.info_dict['update_id']
     print(f'Start update_id: {update_id}')
     database = DataBase()
     print('Connection to DataBase is successful.')

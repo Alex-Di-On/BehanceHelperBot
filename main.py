@@ -43,6 +43,10 @@ if __name__ == '__main__':
     print('Connection to DataBase is successful.')
     while True:
         time.sleep(0.5)
+
+
+
+
         try:
             bot = TelegramAPI(update_id)
             bot.get_info()

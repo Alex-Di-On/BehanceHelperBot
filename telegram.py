@@ -39,7 +39,8 @@ class TelegramAPI:
         """Return info_dict."""
         info_dict = {'update_id': 0, 'client_id': 0, 'text': None}
         try:
-            res_dict = self.get_response().json()
+            data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
+            res_dict = self.get_response(data=data).json()
             if not res_dict['result']:
                 return info_dict
             info_dict['update_id'] = res_dict['result'][0]['update_id']
@@ -60,7 +61,7 @@ class TelegramAPI:
 
     def send_message(self, text: str, command: str = None, button: list = None) -> None:
         """Sending message to Client."""
-        data = {'chat_id': self.client_id, 'text': text}
+        data = {'chat_id': self.info_dict['client_id'], 'text': text}
         match command:
             case 'set_buttons':
                 data['reply_markup'] = json.dumps({'keyboard': button, 'one_time_keyboard': False})

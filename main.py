@@ -36,10 +36,12 @@ def country_filter(region: str) -> str:
 
 
 if __name__ == '__main__':
-    database = DataBase()
-    telegram = TelegramAPI()
-    update_id = telegram.get_update_id()
+    test = TelegramAPI()
+    test.check_status_code()
+    update_id = test.get_update_id()
     print(f'Start update_id: {update_id}')
+    database = DataBase()
+    print('Connection to DataBase is successful.')
     while True:
         time.sleep(0.5)
         try:

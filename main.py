@@ -61,6 +61,8 @@ if __name__ == '__main__':
                                 continue
                             if message == "Author's country":
                                 bot.send_message(url.get_country() + url.get_flag())
+                            else:
+                                bot.send_message(url.get_stat(message))
                         case _:
                             author = ParserBehance(message)
                             if author.url_validation():

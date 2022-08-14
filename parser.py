@@ -41,8 +41,17 @@ class ParserBehance:
             return ''
         return flag
 
-    def get_statistics(self) -> dict:
+    def get_statistics_dict(self) -> dict:
         """Return statistics of author by command from html-page."""
         views = self.get_html_page().find('table', class_='UserInfo-userStats-PFk')
         array = [views.find_all('td')[i].text for i in range(len(views.find_all('td')))]
         return {array[a]: array[a + 1] for a in range(len(array))[::2] if a < len(array) - 1}
+
+    def get_stat(self, message: str) -> str:
+        """Return statistics by key."""
+        key = message[9:].title()
+        try:
+            value = self.get_statistics_dict()[key]
+        except KeyError:
+            value = self.statistics[key]
+        return value

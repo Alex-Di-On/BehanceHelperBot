@@ -45,10 +45,14 @@ if __name__ == '__main__':
         time.sleep(0.5)
         bot = TelegramAPI(update_id)
         if bot.info_dict['text'] is None:
-            print('Никто не обращался к боту!')
+            print('Nobody texted to Bot.')
             continue
         else:
-            bot.send_message('Ведутся технические работы!')
+            if database.check_connection():
+                print('DataBase status connection is True.')
+                bot.send_message('Ведутся технические работы!')
+            else:
+                bot.send_message(answers['error_db'])
         update_id += 1
 
 
@@ -57,9 +61,8 @@ if __name__ == '__main__':
 
 
 
-        # if database.check_connection():
+
         #     if language_test(message):
-        #         bot.send_message('Ведутся технические работы.')
 
                 # match bot.message:
                 #     case '/start' | 'CHANGE URL':
@@ -99,9 +102,6 @@ if __name__ == '__main__':
                 #             bot.send_message(answers['no_portfolio'])
         #     else:
         #         bot.send_message(answers['language_test'])
-        # else:
-        #     bot.send_message(answers['error_db'])
-        # update_id += 1
 
 
 

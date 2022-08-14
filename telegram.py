@@ -1,4 +1,3 @@
-import sys
 import requests
 import json
 from requests import Response, HTTPError
@@ -10,8 +9,6 @@ class TelegramAPI:
 
     __URL = 'https://api.telegram.org/bot'
     __TOKEN = configuration['token']
-    client_id = None
-    message = None
 
     def __init__(self, identification: int = 0):
         """Initialisation of Class Object."""
@@ -50,14 +47,6 @@ class TelegramAPI:
             return info_dict
         except HTTPError:
             return info_dict
-
-    def get_info(self) -> None:
-        """Getting info about Client."""
-        data = {'offset': self.identification, 'limit': 1, 'timeout': 0}
-        response = self.get_post_request('/getUpdates', data)
-        way = response.json()['result'][0]['message']
-        self.client_id = way['from']['id']
-        self.message = way['text']
 
     def send_message(self, text: str, command: str = None, button: list = None) -> None:
         """Sending message to Client."""

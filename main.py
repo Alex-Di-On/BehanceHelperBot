@@ -62,6 +62,14 @@ if __name__ == '__main__':
                                 bot.send_message(answers['empty_history'])
                             else:
                                 bot.send_message(request_history)
+                        case "Author's project views" | "Author's appreciations" |\
+                             "Author's followers" | "Author's following" | "Author's country":
+                            try:
+                                url = ParserBehance(database.get_last_note(client_id))
+                            except IndexError:
+                                bot.send_message(answers['no_history'])
+                                continue
+
                         case _:
                             author = ParserBehance(message)
                             if author.url_validation():

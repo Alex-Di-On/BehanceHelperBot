@@ -62,3 +62,8 @@ class DataBase(metaclass=MetaSingleton):
         """Return request history."""
         self.call_database('history', id)
         return ', '.join(list(set([i[0].lower() for i in self.result])))
+
+    def get_last_note(self, id: int) -> str:
+        """Return last note from DataBase by id."""
+        self.call_database('last_note', id)
+        return self.result[0][0].lower()

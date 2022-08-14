@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from emoji import emojize
 
 
 class ParserBehance:
@@ -25,8 +26,20 @@ class ParserBehance:
         return BeautifulSoup(self.get_request().text, 'html.parser')
 
     def get_country(self) -> str:
-        """Setting country of author from html-page."""
-        return self.get_html_page().find('span', class_='e2e-Profile-location').text
+        """Return country of author from html-page."""
+        country = self.get_html_page().find('span', class_='e2e-Profile-location').text
+        if country.split()[-1] == 'Federation':
+            return 'Russia'
+        elif country.split()[-1] == 'China':
+            return 'China'
+        return country
+
+    def get_flag(self) -> str:
+        """Return flag by country."""
+        flag = f"{emojize(f':{self.get_country()}:')}"
+        if len(flag) > 2:
+            return ''
+        return flag
 
     def get_statistics(self) -> dict:
         """Return statistics of author by command from html-page."""

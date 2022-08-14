@@ -3,13 +3,11 @@ from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import time
-from emoji import emojize
 
 from database import DataBase
 from parser import ParserBehance
 from telegram import TelegramAPI
 from answers import answers, buttons_menu
-from config import configuration
 
 
 def admin_message(data: dict) -> requests.models.Response:
@@ -24,15 +22,6 @@ def language_test(word: str) -> bool:
         if ord(i) not in range(32, 128):
             return False
     return True
-
-
-def country_filter(region: str) -> str:
-    """Changing country for emoji searching."""
-    if region.split()[-1] == 'Federation':
-        return 'Russia'
-    elif region.split()[-1] == 'China':
-        return 'China'
-    return region
 
 
 if __name__ == '__main__':
@@ -70,6 +59,8 @@ if __name__ == '__main__':
                                 bot.send_message(answers['no_history'])
                                 update_id += 1
                                 continue
+                            if message == "Author's country":
+                                bot.send_message(url.get_country() + url.get_flag())
                         case _:
                             author = ParserBehance(message)
                             if author.url_validation():

@@ -30,10 +30,13 @@ In project I use next modules:
 - email.mime.text
 - emoji
 
-### WARNING!
+### Flowchart
 
 You can see my flowchart. You will find it in main directory.
-You can use Bot in Telegram: t.me/BehanceHelperBot
+
+### You can see how it works!
+
+t.me/BehanceHelperBot
 
 ### License
 

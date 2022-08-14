@@ -33,7 +33,7 @@ In project I use next modules:
 ### WARNING!
 
 You can see my flowchart. You will find it in main directory.
-You can use it in Telegram: t.me/BehanceHelperBot
+You can use Bot in Telegram: t.me/BehanceHelperBot
 
 ### License
 
@@ -41,4 +41,4 @@ MIT
 
 ### Thanks for watching!
 
-P.S. Thanks my Python Mentor Victor Malkov.
+P.S. Thanks my Python Mentor - Victor Malkov.

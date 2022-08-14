@@ -31,10 +31,7 @@
     #             bot.send_message(f'{key} of {name} is {value}.')
     #     except IndexError:
     #         bot.send_message(answers['no_history'])
-    #
-    #     author = ParserBehance(bot.message)
-    #     if author.url_validation():
-    #         database.call_database('insert', bot.client_id, bot.message)
-    #         bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
-    #     else:
-    #         bot.send_message(answers['no_portfolio'])
+
+
+
+

@@ -44,24 +44,31 @@ if __name__ == '__main__':
     while True:
         time.sleep(0.5)
         bot = TelegramAPI(update_id)
-        if bot.info_dict['text'] is None:
+        message = bot.info_dict['text']
+        client_id = bot.info_dict['client_id']
+        if message is None:
             print('Nobody texted to Bot.')
             continue
         else:
             if database.check_connection():
                 print('DataBase status connection is True.')
-                if language_test(bot.info_dict['text']):
-                    match bot.info_dict['text']:
+                if language_test(message):
+                    match message:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'], 'del_buttons')
                         case 'REQUEST HISTORY':
-                            request_history = database.get_request_history(bot.info_dict['client_id'])
+                            request_history = database.get_request_history(client_id)
                             if not request_history:
                                 bot.send_message(answers['empty_history'])
                             else:
                                 bot.send_message(request_history)
                         case _:
-                            bot.send_message('Ведутся технические работы!')
+                            author = ParserBehance(message)
+                            if author.url_validation():
+                                database.call_database('insert', client_id, message)
+                                bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                            else:
+                                bot.send_message(answers['no_portfolio'])
                 else:
                     bot.send_message(answers['language_test'])
             else:

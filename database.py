@@ -57,3 +57,8 @@ class DataBase(metaclass=MetaSingleton):
         self.__cursor.execute(request)
         self.result = self.__cursor.fetchall()
         self.__connection.commit()
+
+    def get_request_history(self, id: int) -> str:
+        """Return request history."""
+        self.call_database('history', id)
+        return ', '.join(list(set([i[0].lower() for i in self.result])))

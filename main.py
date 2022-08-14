@@ -54,6 +54,12 @@ if __name__ == '__main__':
                     match bot.info_dict['text']:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(answers['start'], 'del_buttons')
+                        case 'REQUEST HISTORY':
+                            request_history = database.get_request_history(bot.info_dict['client_id'])
+                            if not request_history:
+                                bot.send_message(answers['empty_history'])
+                            else:
+                                bot.send_message(request_history)
                         case _:
                             bot.send_message('Ведутся технические работы!')
                 else:

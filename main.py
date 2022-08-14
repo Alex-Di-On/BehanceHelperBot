@@ -50,9 +50,13 @@ if __name__ == '__main__':
         else:
             if database.check_connection():
                 print('DataBase status connection is True.')
-                bot.send_message('Ведутся технические работы!')
+                if language_test(bot.info_dict['text']):
+                    bot.send_message('Ведутся технические работы!')
+                else:
+                    bot.send_message(answers['language_test'])
             else:
                 bot.send_message(answers['error_db'])
+                print('DataBase status connection is False.')
         update_id += 1
 
 
@@ -62,7 +66,6 @@ if __name__ == '__main__':
 
 
 
-        #     if language_test(message):
 
                 # match bot.message:
                 #     case '/start' | 'CHANGE URL':
@@ -100,10 +103,6 @@ if __name__ == '__main__':
                 #             bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
                 #         else:
                 #             bot.send_message(answers['no_portfolio'])
-        #     else:
-        #         bot.send_message(answers['language_test'])
-
-
 
 
             #     try:

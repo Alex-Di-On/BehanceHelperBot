@@ -1,28 +1,12 @@
-import requests
 from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import time
-
 from database import DataBase
 from parser import ParserBehance
 from telegram import TelegramAPI
 from answers import answers, buttons_menu
-
-
-def admin_message(data: dict) -> requests.models.Response:
-    """Sending message to Admin."""
-    method = '/sendMessage'
-    return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
-
-
-def language_test(word: str) -> bool:
-    """Checking that message is written in English."""
-    for i in list(word):
-        if ord(i) not in range(32, 128):
-            return False
-    return True
-
+from helper import language_test
 
 if __name__ == '__main__':
     test = TelegramAPI()

@@ -27,11 +27,11 @@ class ParserBehance:
 
     def get_country(self) -> str:
         """Return country of author from html-page."""
-        country = self.get_html_page().find('span', class_='e2e-Profile-location').text
-        if country.split()[-1] == 'Federation':
-            return 'Russia'
-        elif country.split()[-1] == 'China':
-            return 'China'
+        full_location = self.get_html_page().find('span', class_='e2e-Profile-location').text
+        country = full_location.split()[-1]
+        match country:
+            case 'Federation':
+                return 'Russia'
         return country
 
     def get_flag(self) -> str:

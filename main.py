@@ -68,8 +68,8 @@ if __name__ == '__main__':
                                 url = ParserBehance(database.get_last_note(client_id))
                             except IndexError:
                                 bot.send_message(answers['no_history'])
+                                update_id += 1
                                 continue
-
                         case _:
                             author = ParserBehance(message)
                             if author.url_validation():

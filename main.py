@@ -51,7 +51,11 @@ if __name__ == '__main__':
             if database.check_connection():
                 print('DataBase status connection is True.')
                 if language_test(bot.info_dict['text']):
-                    bot.send_message('Ведутся технические работы!')
+                    match bot.info_dict['text']:
+                        case '/start' | 'CHANGE URL':
+                            bot.send_message(answers['start'], 'del_buttons')
+                        case _:
+                            bot.send_message('Ведутся технические работы!')
                 else:
                     bot.send_message(answers['language_test'])
             else:

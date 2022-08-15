@@ -56,4 +56,6 @@ class TelegramAPI:
                 data['reply_markup'] = json.dumps({'keyboard': button, 'one_time_keyboard': False})
             case 'del_buttons':
                 data['reply_markup'] = json.dumps({'remove_keyboard': True})
+            case 'admin':
+                data['chat_id'] = configuration['admin_id']
         self.get_post_request('/sendMessage', data)

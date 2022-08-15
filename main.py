@@ -1,5 +1,7 @@
 import time
+from smtplib import SMTPAuthenticationError, SMTPConnectError
 from database import DataBase
+from mail import admin_email
 from parser import ParserBehance
 from telegram import TelegramAPI
 from answers import answers, buttons_menu
@@ -64,4 +66,10 @@ if __name__ == '__main__':
             else:
                 bot.send_message(answers['error_db'])
                 print('DataBase status connection is False.')
+                try:
+                    admin_email()
+                except SMTPAuthenticationError:
+                    bot.send_message('DataBase Error. SMTPAuthenticationError.', 'admin')
+                except SMTPConnectError:
+                    bot.send_message('DataBase Error. SMTPConnectError.', 'admin')
         update_id += 1

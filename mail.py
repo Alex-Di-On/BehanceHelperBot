@@ -1,3 +1,19 @@
+from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+
+
+
+
+# def admin_message(data: dict) -> requests.models.Response:
+#     """Sending message to Admin."""
+#     method = '/sendMessage'
+#     return requests.post(TelegramAPI.URL + TelegramAPI.TOKEN + method, data=data)
+
+
+
+
 #     try:
             #         smtp_object = SMTP(configuration['system_domen'], port=configuration['port'])
             #         smtp_object.starttls()

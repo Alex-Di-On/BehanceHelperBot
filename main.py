@@ -1,10 +1,9 @@
-import time
-from smtplib import SMTPAuthenticationError, SMTPConnectError
-from database import DataBase
-from helper_box import admin_email, bot_answers, buttons_menu, language_test
-from parser import ParserBehance
 from telegram import TelegramAPI
-
+from database import DataBase
+from parser import ParserBehance
+from helper_box import admin_email, bot_answers, buttons_menu, language_test
+from smtplib import SMTPAuthenticationError, SMTPConnectError
+import time
 
 if __name__ == '__main__':
     test = TelegramAPI()

@@ -69,7 +69,7 @@ if __name__ == '__main__':
                 try:
                     admin_email()
                 except SMTPAuthenticationError:
-                    bot.send_message('DataBase Error. SMTPAuthenticationError.', 'admin')
+                    bot.send_message('DataBaseError. SMTPAuthenticationError.', 'admin')
                 except SMTPConnectError:
-                    bot.send_message('DataBase Error. SMTPConnectError.', 'admin')
+                    bot.send_message('DataBaseError. SMTPConnectError.', 'admin')
         update_id += 1

@@ -17,7 +17,7 @@ Also, this Bot remembers all your request history and you can see it at any time
 
 BehanceHelperBot works on POST-request only by TelegramAPI.
 
-In project I use next modules:
+In this project I've used next modules:
 
 - requests
 - sys
@@ -26,8 +26,7 @@ In project I use next modules:
 - bs4
 - mysql.connector
 - smtplib 
-- email.mime.multipart
-- email.mime.text
+- email
 - emoji
 
 ### Flowchart
@@ -44,4 +43,4 @@ MIT
 
 ### Thanks for watching!
 
-P.S. Thanks my Python Mentor - Victor Malkov.
+Code Review by Victor Malkov.

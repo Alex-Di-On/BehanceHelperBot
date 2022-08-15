@@ -1,18 +1,9 @@
 import time
 from smtplib import SMTPAuthenticationError, SMTPConnectError
 from database import DataBase
-from mail import admin_email
+from helper_box import admin_email, bot_answers, buttons_menu, language_test
 from parser import ParserBehance
 from telegram import TelegramAPI
-from answers import answers, buttons_menu
-
-
-def language_test(word: str) -> bool:
-    """Checking that message is written in English."""
-    for i in list(word):
-        if ord(i) not in range(32, 128):
-            return False
-    return True
 
 
 if __name__ == '__main__':
@@ -35,11 +26,11 @@ if __name__ == '__main__':
                 if language_test(message):
                     match message:
                         case '/start' | 'CHANGE URL':
-                            bot.send_message(answers['start'], 'del_buttons')
+                            bot.send_message(bot_answers['start'], 'del_buttons')
                         case 'REQUEST HISTORY':
                             request_history = database.get_request_history(client_id)
                             if not request_history:
-                                bot.send_message(answers['empty_history'])
+                                bot.send_message(bot_answers['empty_history'])
                             else:
                                 bot.send_message(request_history)
                         case "Author's project views" | "Author's appreciations" |\
@@ -47,7 +38,7 @@ if __name__ == '__main__':
                             try:
                                 url = ParserBehance(database.get_last_note(client_id))
                             except IndexError:
-                                bot.send_message(answers['no_history'])
+                                bot.send_message(bot_answers['no_history'])
                                 update_id += 1
                                 continue
                             if message == "Author's country":
@@ -58,13 +49,13 @@ if __name__ == '__main__':
                             author = ParserBehance(message)
                             if author.url_validation():
                                 database.call_database('insert', client_id, message)
-                                bot.send_message(answers['menu'], 'set_buttons', buttons_menu)
+                                bot.send_message(bot_answers['menu'], 'set_buttons', buttons_menu)
                             else:
-                                bot.send_message(answers['no_portfolio'])
+                                bot.send_message(bot_answers['no_portfolio'])
                 else:
-                    bot.send_message(answers['language_test'])
+                    bot.send_message(bot_answers['language_test'])
             else:
-                bot.send_message(answers['error_db'])
+                bot.send_message(bot_answers['error_db'])
                 print('DataBase status connection is False.')
                 try:
                     admin_email()

@@ -12,6 +12,7 @@ BehanceHelper is Bot, who help you to find Behance statistics of any author, who
 
 Also, this Bot remembers all your request history and you can see it at any time. Bot uses Database for keeping your request history. 
 
+You will find Flowchart it in main directory.
 
 ### Tech
 
@@ -28,14 +29,6 @@ In this project I've used next modules:
 - smtplib 
 - email
 - emoji
-
-### Flowchart
-
-You can see my flowchart. You will find it in main directory.
-
-### You can see how it works!
-
-t.me/BehanceHelperBot
 
 ### License
 

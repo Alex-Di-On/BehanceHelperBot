@@ -1,7 +1,7 @@
 from telegram import TelegramAPI
 from database import DataBase
 from parser import ParserBehance
-from helper_box import admin_email, bot_answers, buttons_menu, language_test
+from helper_box import admin_email, bot_answers, buttons_menu, is_english
 from smtplib import SMTPAuthenticationError, SMTPConnectError
 import time
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
         else:
             if database.check_connection():
                 print('DataBase status connection is True.')
-                if language_test(message):
+                if is_english(message):
                     match message:
                         case '/start' | 'CHANGE URL':
                             bot.send_message(bot_answers['start'], 'del_buttons')

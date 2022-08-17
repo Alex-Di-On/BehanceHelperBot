@@ -19,7 +19,7 @@ def admin_email() -> None:
     smtp_object.quit()
 
 
-def language_test(word: str) -> bool:
+def is_english(word: str) -> bool:
     """Checking that message is written in English."""
     for i in list(word):
         if ord(i) not in range(32, 128):

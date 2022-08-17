@@ -41,7 +41,7 @@ class ParserBehance:
             return ''
         return flag
 
-    def get_statistics_dict(self) -> dict:
+    def get_statistics_dict(self) -> dict[str, int]:
         """Return statistics of author by command from html-page."""
         views = self.get_html_page().find('table', class_='UserInfo-userStats-PFk')
         array = [views.find_all('td')[i].text for i in range(len(views.find_all('td')))]

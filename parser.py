@@ -37,9 +37,7 @@ class ParserBehance:
     def get_flag(self) -> str:
         """Return flag by country."""
         flag = f"{emojize(f':{self.get_country()}:')}"
-        if len(flag) > 2:
-            return ''
-        return flag
+        return '' if len(flag) > 2 else flag
 
     def get_statistics_dict(self) -> dict[str, int]:
         """Return statistics of author by command from html-page."""

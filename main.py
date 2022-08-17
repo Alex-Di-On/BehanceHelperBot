@@ -41,7 +41,7 @@ if __name__ == '__main__':
                                 update_id += 1
                                 continue
                             if message == "Author's country":
-                                bot.send_message(url.get_country() + url.get_flag())
+                                bot.send_message(url.get_location())
                             else:
                                 bot.send_message(url.get_stat(message))
                         case _:
